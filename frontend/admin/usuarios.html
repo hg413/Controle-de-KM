@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usuários — Admin | Controle KM</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body>
+  <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🚗</div>
+        <div class="logo-text">Controle KM<span>Painel Admin</span></div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-label">Principal</div>
+        <a href="index.html" class="nav-item"><span class="nav-icon">📊</span> Dashboard</a>
+        <div class="sidebar-section-label">Cadastros</div>
+        <a href="usuarios.html" class="nav-item active"><span class="nav-icon">👥</span> Usuários</a>
+        <a href="veiculos.html" class="nav-item"><span class="nav-icon">🚙</span> Veículos</a>
+        <div class="sidebar-section-label">Frota</div>
+        <a href="abastecimentos.html" class="nav-item"><span class="nav-icon">⛽</span> Abastecimentos</a>
+        <a href="manutencoes.html" class="nav-item"><span class="nav-icon">🔧</span> Manutenções</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="sidebar-avatar">A</div>
+          <div class="user-details">
+            <div class="user-name" id="sidebar-nome">Carregando...</div>
+            <div class="user-role" id="sidebar-role">Administrador</div>
+          </div>
+          <button class="btn-logout" id="btn-logout" title="Sair">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="page-header"
+        style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h1 class="page-title">Usuários</h1>
+          <p class="page-subtitle">Gerencie os usuários do sistema</p>
+        </div>
+        <button class="btn btn-primary" id="btn-novo-usuario">+ Novo Usuário</button>
+      </div>
+
+      <div class="table-card">
+        <div class="table-header">
+          <span class="table-title">Lista de Usuários</span>
+        </div>
+        <div id="tabela-wrapper">
+          <div class="empty-state">
+            <div class="empty-icon">⏳</div>
+            <p>Carregando...</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Criar/Editar -->
+  <div class="modal-overlay" id="modal-usuario">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-titulo">Novo Usuário</h2>
+        <button class="modal-close" id="modal-fechar">✕</button>
+      </div>
+      <form id="form-usuario">
+        <input type="hidden" id="usuario-id" />
+        <div class="form-group">
+          <label class="form-label">Nome completo</label>
+          <input class="form-control" type="text" id="usuario-nome" placeholder="Nome do usuário" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">E-mail</label>
+          <input class="form-control" type="email" id="usuario-email" placeholder="email@exemplo.com" required />
+        </div>
+        <div class="form-group" id="grupo-senha">
+          <label class="form-label">Senha</label>
+          <input class="form-control" type="password" id="usuario-senha" placeholder="Mínimo 6 caracteres" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Perfil</label>
+          <select class="form-control" id="usuario-perfil" required>
+            <option value="">Selecione...</option>
+            <option value="admin">Administrador</option>
+            <option value="motorista">Motorista</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-salvar">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/api.js?v=2"></script>
+  <script src="../js/auth.js?v=2"></script>
+  <script src="../js/usuarios.js?v=2"></script>
+  <script>
+    const usuario = Auth.require('admin');
+    if (usuario) { preencherSidebar(usuario); initMobileMenu(); initUsuarios(); }
+  </script>
+</body>
+
+</html>

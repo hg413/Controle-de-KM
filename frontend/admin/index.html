@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Admin | Controle KM</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body>
+  <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🚗</div>
+        <div class="logo-text">
+          Controle KM
+          <span>Painel Admin</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-label">Principal</div>
+        <a href="index.html" class="nav-item active">
+          <span class="nav-icon">📊</span> Dashboard
+        </a>
+
+        <div class="sidebar-section-label">Cadastros</div>
+        <a href="usuarios.html" class="nav-item">
+          <span class="nav-icon">👥</span> Usuários
+        </a>
+        <a href="veiculos.html" class="nav-item">
+          <span class="nav-icon">🚙</span> Veículos
+        </a>
+
+        <div class="sidebar-section-label">Frota</div>
+        <a href="abastecimentos.html" class="nav-item">
+          <span class="nav-icon">⛽</span> Abastecimentos
+        </a>
+        <a href="manutencoes.html" class="nav-item">
+          <span class="nav-icon">🔧</span> Manutenções
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="sidebar-avatar">A</div>
+          <div class="user-details">
+            <div class="user-name" id="sidebar-nome">Carregando...</div>
+            <div class="user-role" id="sidebar-role">Administrador</div>
+          </div>
+          <button class="btn-logout" id="btn-logout" title="Sair">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Conteúdo -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-subtitle">Resumo geral do sistema</p>
+      </div>
+
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-icon">👥</div>
+          <div class="card-label">Usuários</div>
+          <div class="card-value" id="total-usuarios">—</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🚙</div>
+          <div class="card-label">Veículos</div>
+          <div class="card-value" id="total-veiculos">—</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📋</div>
+          <div class="card-label">Registros do Mês</div>
+          <div class="card-value">—</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⛽</div>
+          <div class="card-label">Abastecimentos</div>
+          <div class="card-value">—</div>
+        </div>
+      </div>
+
+      <div class="cards-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="card" style="cursor:pointer" onclick="location.href='usuarios.html'">
+          <p style="font-size:14px;color:var(--text-secondary);margin-bottom:8px;">Acesso rápido</p>
+          <p style="font-weight:600;">👥 Gerenciar Usuários →</p>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="location.href='veiculos.html'">
+          <p style="font-size:14px;color:var(--text-secondary);margin-bottom:8px;">Acesso rápido</p>
+          <p style="font-weight:600;">🚙 Gerenciar Veículos →</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/api.js?v=2"></script>
+  <script src="../js/auth.js?v=2"></script>
+  <script>
+    const usuario = Auth.require('admin');
+    if (usuario) {
+      preencherSidebar(usuario);
+      initMobileMenu();
+
+      // Carrega totais
+      Api.getUsuarios().then(({ data }) => {
+        document.getElementById('total-usuarios').textContent = Array.isArray(data) ? data.length : '—';
+      });
+      Api.getVeiculos().then(({ data }) => {
+        document.getElementById('total-veiculos').textContent = Array.isArray(data) ? data.length : '—';
+      });
+    }
+  </script>
+</body>
+
+</html>

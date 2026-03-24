@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abastecimentos — Motorista | Controle KM</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🚗</div>
+        <div class="logo-text">Controle KM<span>Painel Motorista</span></div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-label">Principal</div>
+        <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span> Início</a>
+        <div class="sidebar-section-label">Frota</div>
+        <a href="abastecimentos.html" class="nav-item active"><span class="nav-icon">⛽</span> Abastecimentos</a>
+        <a href="manutencoes.html" class="nav-item"><span class="nav-icon">🔧</span> Manutenções</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="sidebar-avatar">M</div>
+          <div class="user-details">
+            <div class="user-name" id="sidebar-nome">Carregando...</div>
+            <div class="user-role" id="sidebar-role">Motorista</div>
+          </div>
+          <button class="btn-logout" id="btn-logout" title="Sair">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h1 class="page-title">Meus Abastecimentos</h1>
+          <p class="page-subtitle">Puxe o histórico ou registre um novo</p>
+        </div>
+        <button class="btn btn-primary" id="btn-novo-abastecimento">+ Registrar Abastecimento</button>
+      </div>
+
+      <div class="table-card">
+        <div id="tabela-wrapper">
+          <div class="empty-state">⏳ Carregando...</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal-abastecimento">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Registrar Abastecimento</h2>
+        <button class="modal-close" id="modal-fechar">✕</button>
+      </div>
+      <form id="form-abastecimento">
+        <div class="form-group">
+          <label class="form-label">Veículo</label>
+          <select class="form-control" id="ab-veiculo" required>
+              <option value="">Carregando veículos...</option>
+          </select>
+        </div>
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Data</label>
+            <input class="form-control" type="date" id="ab-data" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">KM Atual</label>
+            <input class="form-control" type="number" id="ab-km" placeholder="0" required />
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Litros</label>
+            <input class="form-control" type="number" step="0.01" id="ab-litros" placeholder="0.00" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Valor Total (R$)</label>
+            <input class="form-control" type="number" step="0.01" id="ab-valor" placeholder="0.00" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Posto / Local</label>
+          <input class="form-control" type="text" id="ab-posto" placeholder="Nome do posto" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-salvar">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/api.js?v=2"></script>
+  <script src="../js/auth.js?v=2"></script>
+  <script src="../js/abastecimentos.js?v=2"></script>
+  <script>
+    const u = Auth.require('motorista');
+    if (u) { 
+        preencherSidebar(u); 
+        initMobileMenu(); 
+        // No motorista, podemos querer filtrar os veículos dele, mas por enquanto usaremos o init padrão
+        initAbastecimentos(); 
+    }
+  </script>
+</body>
+</html>
