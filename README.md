@@ -22,4 +22,4 @@ Sistema de gerenciamento de frota de veículos desenvolvido em PHP e JavaScript,
 4. Acesse via `http://localhost/controle-km/frontend/`.
 
 ## ✍️ Autor
-Desenvolvido por hg413.
+Desenvolvido por Bruno Lima.
