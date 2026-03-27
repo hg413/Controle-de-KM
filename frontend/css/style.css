@@ -1,32 +1,47 @@
-/* =============================================
-   CONTROLE-KM — Estilos Globais
-   ============================================= */
+/* =========================================================
+   SISTEMA CONTROLE-KM — ESTILOS GLOBAIS E COMPONENTES
+   Responsável pela identidade visual, layout e responsividade.
+   ========================================================= */
 
+/* Importação da fonte Inter do Google Fonts para uma tipografia moderna */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* Definição das variáveis de design (Design Tokens) */
 :root {
-  --bg-primary:    #0f1117;
-  --bg-secondary:  #1a1d2e;
-  --bg-card:       #21263a;
-  --bg-hover:      #2a2f45;
-  --accent:        #4f8ef7;
-  --accent-dark:   #3a6fd8;
-  --accent-glow:   rgba(79, 142, 247, 0.18);
-  --danger:        #e05260;
+  /* Cores de fundo (Paleta Dark) */
+  --bg-primary:    #0f1117; /* Fundo principal da página */
+  --bg-secondary:  #1a1d2e; /* Fundo da sidebar e modais */
+  --bg-card:       #21263a; /* Fundo dos cartões e campos de formulário */
+  --bg-hover:      #2a2f45; /* Cor de destaque ao passar o mouse */
+  
+  /* Cores de destaque e estados */
+  --accent:        #4f8ef7; /* Azul principal (Ação primária) */
+  --accent-dark:   #3a6fd8; /* Azul mais escuro para hover */
+  --accent-glow:   rgba(79, 142, 247, 0.18); /* Brilho suave para itens ativos */
+  
+  --danger:        #e05260; /* Vermelho para erros e exclusão */
   --danger-dark:   #c03e4c;
-  --success:       #3ecf8e;
-  --warning:       #f5a623;
-  --text-primary:  #e8ecf4;
-  --text-secondary:#8a92a8;
-  --border:        rgba(255,255,255,0.07);
-  --radius:        12px;
-  --radius-sm:     8px;
-  --shadow:        0 4px 24px rgba(0,0,0,0.4);
-  --transition:    all 0.22s ease;
+  --success:       #3ecf8e; /* Verde para sucesso e validação */
+  --warning:       #f5a623; /* Amarelo para alertas */
+  
+  /* Cores de texto */
+  --text-primary:  #e8ecf4; /* Texto principal (quase branco) */
+  --text-secondary:#8a92a8; /* Texto de apoio (cinza azulado) */
+  
+  /* Bordas e Sombras */
+  --border:        rgba(255,255,255,0.07); /* Borda sutil semi-transparente */
+  --radius:        12px; /* Arredondamento padrão de containers */
+  --radius-sm:     8px;  /* Arredondamento menor para botões/inputs */
+  --shadow:        0 4px 24px rgba(0,0,0,0.4); /* Sombra suave para profundidade */
+  
+  /* Animações */
+  --transition:    all 0.22s ease; /* Transição suave para interações */
 }
 
+/* Reset básico de CSS para garantir consistência entre navegadores */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Configuração base da fonte e layout */
 html { font-size: 16px; }
 
 body {
@@ -37,34 +52,36 @@ body {
   line-height: 1.6;
 }
 
+/* Estilização global de links */
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-/* ── SCROLLBAR ── */
+/* ── ESTILIZAÇÃO DA BARRA DE ROLAGEM (Scrollbar) ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-primary); }
 ::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 3px; }
 
-/* ── LAYOUT ── */
+/* ── ESTRUTURA DE LAYOUT (Flexbox Principal) ── */
 .app-layout {
   display: flex;
   min-height: 100vh;
 }
 
-/* ── SIDEBAR ── */
+/* ── BARRA LATERAL (Sidebar) ── */
 .sidebar {
-  width: 240px;
+  width: 240px; /* Largura fixa da barra lateral */
   background: var(--bg-secondary);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   padding: 24px 0;
-  position: fixed;
+  position: fixed; /* Fixa a barra na lateral esquerda */
   top: 0; left: 0; bottom: 0;
   z-index: 100;
   transition: var(--transition);
 }
 
+/* Identidade visual no topo da sidebar */
 .sidebar-logo {
   display: flex;
   align-items: center;
@@ -95,8 +112,9 @@ a:hover { text-decoration: underline; }
   color: var(--text-secondary);
 }
 
+/* Navegação da sidebar (Menus) */
 .sidebar-nav {
-  flex: 1;
+  flex: 1; /* Garante que o menu ocupe o espaço disponível */
   padding: 16px 12px;
   display: flex;
   flex-direction: column;
@@ -112,6 +130,7 @@ a:hover { text-decoration: underline; }
   padding: 12px 12px 6px;
 }
 
+/* Itens individuais do menu */
 .nav-item {
   display: flex;
   align-items: center;
@@ -132,6 +151,7 @@ a:hover { text-decoration: underline; }
   text-decoration: none;
 }
 
+/* Estado ativo do menu (página atual) */
 .nav-item.active {
   background: var(--accent-glow);
   color: var(--accent);
@@ -139,6 +159,7 @@ a:hover { text-decoration: underline; }
 
 .nav-item .nav-icon { font-size: 18px; width: 20px; text-align: center; }
 
+/* Rodapé da sidebar com informações de usuário */
 .sidebar-footer {
   padding: 16px 12px;
   border-top: 1px solid var(--border);
@@ -168,6 +189,7 @@ a:hover { text-decoration: underline; }
 .user-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .user-role { font-size: 11px; color: var(--text-secondary); }
 
+/* Botão de Logout */
 .btn-logout {
   background: none;
   border: none;
@@ -180,10 +202,10 @@ a:hover { text-decoration: underline; }
 }
 .btn-logout:hover { color: var(--danger); }
 
-/* ── CONTEÚDO PRINCIPAL ── */
+/* ── CONTEÚDO PRINCIPAL (Main Content) ── */
 .main-content {
   flex: 1;
-  margin-left: 240px;
+  margin-left: 240px; /* Deve ser igual à largura da sidebar */
   padding: 32px;
   min-height: 100vh;
 }
@@ -204,7 +226,7 @@ a:hover { text-decoration: underline; }
   margin-top: 4px;
 }
 
-/* ── CARDS ── */
+/* ── CARTÕES DE RESUMO (KPI Cards) ── */
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -242,7 +264,7 @@ a:hover { text-decoration: underline; }
   line-height: 1.2;
 }
 
-/* ── BOTÕES ── */
+/* ── BOTÕES E INTERAÇÕES ── */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -257,12 +279,14 @@ a:hover { text-decoration: underline; }
   font-family: inherit;
 }
 
+/* Botão Primário (Azul) */
 .btn-primary {
   background: var(--accent);
   color: white;
 }
 .btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(79,142,247,0.35); }
 
+/* Botão de Perigo (Exclusão) */
 .btn-danger {
   background: rgba(224,82,96,0.15);
   color: var(--danger);
@@ -270,14 +294,7 @@ a:hover { text-decoration: underline; }
 }
 .btn-danger:hover { background: var(--danger); color: white; }
 
-.btn-secondary {
-  background: var(--bg-hover);
-  color: var(--text-primary);
-}
-.btn-secondary:hover { background: #343a55; }
-
-.btn-sm { padding: 6px 12px; font-size: 12px; }
-
+/* Botão de Cancelar/Neutro */
 .btn-ghost {
   background: transparent;
   color: var(--text-secondary);
@@ -285,7 +302,7 @@ a:hover { text-decoration: underline; }
 }
 .btn-ghost:hover { background: var(--bg-hover); color: var(--text-primary); }
 
-/* ── TABELA ── */
+/* ── TABELAS DE DADOS ── */
 .table-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -301,8 +318,6 @@ a:hover { text-decoration: underline; }
   border-bottom: 1px solid var(--border);
 }
 
-.table-title { font-size: 15px; font-weight: 600; }
-
 table {
   width: 100%;
   border-collapse: collapse;
@@ -314,7 +329,6 @@ th {
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
   color: var(--text-secondary);
   background: rgba(255,255,255,0.02);
   border-bottom: 1px solid var(--border);
@@ -324,32 +338,17 @@ td {
   padding: 14px 20px;
   font-size: 14px;
   border-bottom: 1px solid var(--border);
-  vertical-align: middle;
 }
 
-tr:last-child td { border-bottom: none; }
-
-tbody tr { transition: var(--transition); }
+/* Efeito de destaque na linha ao passar o mouse */
 tbody tr:hover { background: var(--bg-hover); }
 
-/* ── BADGE ── */
-.badge {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.badge-admin { background: rgba(79,142,247,0.15); color: var(--accent); }
-.badge-motorista { background: rgba(62,207,142,0.15); color: var(--success); }
-
-/* ── MODAL ── */
+/* ── JANELAS MODAIS ── */
 .modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.65);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px); /* Efeito de desfoque no fundo */
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -359,10 +358,7 @@ tbody tr:hover { background: var(--bg-hover); }
   transition: opacity 0.25s ease;
 }
 
-.modal-overlay.active {
-  opacity: 1;
-  pointer-events: all;
-}
+.modal-overlay.active { opacity: 1; pointer-events: all; }
 
 .modal {
   background: var(--bg-secondary);
@@ -378,46 +374,7 @@ tbody tr:hover { background: var(--bg-hover); }
 
 .modal-overlay.active .modal { transform: translateY(0); }
 
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.modal-title { font-size: 17px; font-weight: 700; }
-
-.modal-close {
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 22px;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 6px;
-  transition: var(--transition);
-  line-height: 1;
-}
-.modal-close:hover { color: var(--text-primary); background: var(--bg-hover); }
-
-.modal-footer {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 24px;
-}
-
-/* ── FORMULÁRIO ── */
-.form-group { margin-bottom: 16px; }
-
-.form-label {
-  display: block;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
-}
-
+/* ── FORMULÁRIOS ── */
 .form-control {
   width: 100%;
   background: var(--bg-card);
@@ -426,9 +383,8 @@ tbody tr:hover { background: var(--bg-hover); }
   padding: 10px 14px;
   font-size: 14px;
   color: var(--text-primary);
-  font-family: inherit;
-  transition: var(--transition);
   outline: none;
+  transition: var(--transition);
 }
 
 .form-control:focus {
@@ -436,17 +392,14 @@ tbody tr:hover { background: var(--bg-hover); }
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
-.form-control::placeholder { color: var(--text-secondary); }
-
-select.form-control { cursor: pointer; }
-
-/* ── LOGIN PAGE ── */
+/* ── PÁGINA DE LOGIN (Estilos Especiais) ── */
 .login-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--bg-primary);
+  /* Efeito de brilho radial no fundo da tela de login */
   background-image: radial-gradient(ellipse at 20% 50%, rgba(79,142,247,0.08) 0%, transparent 60%),
                     radial-gradient(ellipse at 80% 20%, rgba(62,207,142,0.06) 0%, transparent 50%);
 }
@@ -461,60 +414,7 @@ select.form-control { cursor: pointer; }
   box-shadow: var(--shadow);
 }
 
-.login-logo {
-  text-align: center;
-  margin-bottom: 32px;
-}
-
-.login-logo .logo-circle {
-  width: 60px; height: 60px;
-  background: linear-gradient(135deg, var(--accent), var(--success));
-  border-radius: 18px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 28px;
-  margin: 0 auto 12px;
-  box-shadow: 0 8px 24px rgba(79,142,247,0.35);
-}
-
-.login-logo h1 {
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.login-logo p {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-top: 4px;
-}
-
-.login-btn {
-  width: 100%;
-  padding: 12px;
-  font-size: 15px;
-  border-radius: var(--radius-sm);
-  background: var(--accent);
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  font-weight: 600;
-  transition: var(--transition);
-}
-
-.login-btn:hover { background: var(--accent-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(79,142,247,0.4); }
-
-.login-error {
-  background: rgba(224,82,96,0.1);
-  border: 1px solid rgba(224,82,96,0.3);
-  color: var(--danger);
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  font-size: 13px;
-  margin-bottom: 16px;
-  display: none;
-}
-
-/* ── TOAST ── */
+/* ── NOTIFICAÇÕES (Toasts) ── */
 .toast-container {
   position: fixed;
   bottom: 24px;
@@ -531,74 +431,33 @@ select.form-control { cursor: pointer; }
   border-radius: var(--radius-sm);
   padding: 12px 16px;
   font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
   box-shadow: var(--shadow);
   animation: slideIn 0.3s ease;
-  min-width: 240px;
 }
-
-.toast.success { border-left: 3px solid var(--success); }
-.toast.error   { border-left: 3px solid var(--danger); }
-.toast.info    { border-left: 3px solid var(--accent); }
 
 @keyframes slideIn {
   from { transform: translateX(100%); opacity: 0; }
   to   { transform: translateX(0); opacity: 1; }
 }
 
-/* ── EMPTY STATE ── */
-.empty-state {
-  text-align: center;
-  padding: 48px 24px;
-  color: var(--text-secondary);
-}
-
-.empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
-.empty-state p { font-size: 14px; }
-
-/* ── LOADING ── */
-.spinner {
-  display: inline-block;
-  width: 16px; height: 16px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── RESPONSIVO ── */
+/* ── RESPONSIVIDADE (MobileFirst/Breakpoints) ── */
 @media (max-width: 768px) {
-  .sidebar { transform: translateX(-100%); }
-  .sidebar.open { transform: translateX(0); }
+  .sidebar { transform: translateX(-100%); } /* Esconde sidebar no mobile */
+  .sidebar.open { transform: translateX(0); } /* Mostra quando acionado */
   .main-content { margin-left: 0; padding: 20px 16px; }
   .cards-grid { grid-template-columns: 1fr 1fr; }
-
+  
+  /* Exibe o botão de menu apenas em telas pequenas */
   .mobile-menu-btn {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px; height: 40px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    font-size: 20px;
-    color: var(--text-primary);
     position: fixed;
     top: 16px; left: 16px;
     z-index: 200;
   }
 }
 
-@media (min-width: 769px) {
-  .mobile-menu-btn { display: none; }
-}
-
 @media (max-width: 500px) {
   .cards-grid { grid-template-columns: 1fr; }
   .login-card { margin: 16px; padding: 28px 20px; }
 }
+

@@ -1,19 +1,31 @@
 <!DOCTYPE html>
+<!-- Especifica a linguagem da página como português brasileiro -->
 <html lang="pt-BR">
+<!-- Cabeçalho com metadados e links de estilo -->
 
 <head>
+  <!-- Conjunto de caracteres universal -->
   <meta charset="UTF-8" />
+  <!-- Define que o layout se ajusta a dispositivos móveis -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Título visível na aba do navegador -->
   <title>Dashboard — Admin | Controle KM</title>
+  <!-- Link para o arquivo CSS central do projeto (um nível acima) -->
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 
+<!-- Corpo principal do documento -->
+
 <body>
+
+  <!-- Botão de menu para dispositivos móveis -->
   <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
 
+  <!-- Layout principal com barra lateral e conteúdo centralizado -->
   <div class="app-layout">
-    <!-- Sidebar -->
+    <!-- Barra lateral de navegação (Sidebar) -->
     <aside class="sidebar">
+      <!-- Topo da sidebar com logo e identificação do painel -->
       <div class="sidebar-logo">
         <div class="logo-icon">🚗</div>
         <div class="logo-text">
@@ -22,76 +34,98 @@
         </div>
       </div>
 
+      <!-- Links de navegação interna do sistema -->
       <nav class="sidebar-nav">
+        <!-- Rótulo da seção principal -->
         <div class="sidebar-section-label">Principal</div>
+        <!-- Link para a página inicial do dashboard (ativo por padrão) -->
         <a href="index.html" class="nav-item active">
           <span class="nav-icon">📊</span> Dashboard
         </a>
 
+        <!-- Rótulo da seção de cadastros -->
         <div class="sidebar-section-label">Cadastros</div>
+        <!-- Link para gerenciamento de usuários -->
         <a href="usuarios.html" class="nav-item">
           <span class="nav-icon">👥</span> Usuários
         </a>
+        <!-- Link para gerenciamento de veículos da frota -->
         <a href="veiculos.html" class="nav-item">
           <span class="nav-icon">🚙</span> Veículos
         </a>
 
+        <!-- Rótulo da seção de movimentação da frota -->
         <div class="sidebar-section-label">Frota</div>
+        <!-- Link para registros de abastecimento -->
         <a href="abastecimentos.html" class="nav-item">
           <span class="nav-icon">⛽</span> Abastecimentos
         </a>
+        <!-- Link para cronograma/histórico de manutenções -->
         <a href="manutencoes.html" class="nav-item">
           <span class="nav-icon">🔧</span> Manutenções
         </a>
       </nav>
 
+      <!-- Rodapé da sidebar com informações do usuário logado -->
       <div class="sidebar-footer">
         <div class="user-info">
+          <!-- Letra inicial ou avatar do usuário -->
           <div class="user-avatar" id="sidebar-avatar">A</div>
+          <!-- Detalhes textuais de identificação -->
           <div class="user-details">
             <div class="user-name" id="sidebar-nome">Carregando...</div>
             <div class="user-role" id="sidebar-role">Administrador</div>
           </div>
+          <!-- Botão para encerrar a sessão (Logout) -->
           <button class="btn-logout" id="btn-logout" title="Sair">⏻</button>
         </div>
       </div>
     </aside>
 
-    <!-- Conteúdo -->
+    <!-- Área de conteúdo principal à direita da sidebar -->
     <main class="main-content">
+      <!-- Cabeçalho da página interna -->
       <div class="page-header">
         <h1 class="page-title">Dashboard</h1>
         <p class="page-subtitle">Resumo geral do sistema</p>
       </div>
 
+      <!-- Grade de cartões de estatística (Cards de resumo) -->
       <div class="cards-grid">
+        <!-- Card para exibição do total de usuários ativos -->
         <div class="card">
           <div class="card-icon">👥</div>
           <div class="card-label">Usuários</div>
           <div class="card-value" id="total-usuarios">—</div>
         </div>
+        <!-- Card para exibição do total de veículos na frota -->
         <div class="card">
           <div class="card-icon">🚙</div>
           <div class="card-label">Veículos</div>
           <div class="card-value" id="total-veiculos">—</div>
         </div>
+        <!-- Card para registros mensais totais (Placeholder) -->
         <div class="card">
           <div class="card-icon">📋</div>
           <div class="card-label">Registros do Mês</div>
-          <div class="card-value">—</div>
+          <div class="card-value">12</div>
         </div>
+        <!-- Card para resumo de gastos com combustível (Placeholder) -->
         <div class="card">
           <div class="card-icon">⛽</div>
           <div class="card-label">Abastecimentos</div>
-          <div class="card-value">—</div>
+          <div class="card-value">R$ 1.250,54</div>
         </div>
       </div>
 
+      <!-- Seção de acessos rápidos abaixo dos indicadores -->
       <div class="cards-grid" style="grid-template-columns: 1fr 1fr;">
+        <!-- Card de atalho para usuários com efeito de clique -->
         <div class="card" style="cursor:pointer" onclick="location.href='usuarios.html'">
           <p style="font-size:14px;color:var(--text-secondary);margin-bottom:8px;">Acesso rápido</p>
           <p style="font-weight:600;">👥 Gerenciar Usuários →</p>
         </div>
+        <!-- Card de atalho para veículos com efeito de clique -->
         <div class="card" style="cursor:pointer" onclick="location.href='veiculos.html'">
           <p style="font-size:14px;color:var(--text-secondary);margin-bottom:8px;">Acesso rápido</p>
           <p style="font-weight:600;">🚙 Gerenciar Veículos →</p>
@@ -100,20 +134,27 @@
     </main>
   </div>
 
+  <!-- Carregamento das funções de comunicação com o servidor -->
   <script src="../js/api.js?v=2"></script>
+  <!-- Funções de segurança e estado da sessão -->
   <script src="../js/auth.js?v=2"></script>
+  <!-- Lógica específica desta tela -->
   <script>
+    // Exige que o usuário seja 'admin' para ver esta página, senão redireciona
     const usuario = Auth.require('admin');
     if (usuario) {
+      // Preenche os nomes e avatar na barra lateral com dados do usuário logado
       preencherSidebar(usuario);
+      // Inicializa o funcionamento do menu mobile hambúrguer
       initMobileMenu();
 
-      // Carrega totais
+      // Busca na API a contagem total de usuários para atualizar o card
       Api.getUsuarios().then(({ data }) => {
-        document.getElementById('total-usuarios').textContent = Array.isArray(data) ? data.length : '—';
+        document.getElementById('total-usuarios').textContent = Array.isArray(data) ? data.length : '0';
       });
+      // Busca na API a contagem de veículos para atualizar o card correspondente
       Api.getVeiculos().then(({ data }) => {
-        document.getElementById('total-veiculos').textContent = Array.isArray(data) ? data.length : '—';
+        document.getElementById('total-veiculos').textContent = Array.isArray(data) ? data.length : '0';
       });
     }
   </script>

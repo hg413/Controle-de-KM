@@ -1,22 +1,30 @@
 <!DOCTYPE html>
+<!-- Define a linguagem do documento como português brasileiro -->
 <html lang="pt-BR">
-
+<!-- Início do cabeçalho da página (metadados e estilos) -->
 <head>
   <meta charset="UTF-8" />
+  <!-- Garante que o layout se ajuste corretamente em celulares e tablets -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Título da página exibido na aba do navegador -->
   <title>Manutenções — Admin | Controle KM</title>
+  <!-- Link para o arquivo CSS central do projeto -->
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 
 <body>
+  <!-- Botão de menu hambúrguer para dispositivos móveis -->
   <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
 
   <div class="app-layout">
+    <!-- Barra lateral de navegação (Sidebar) -->
     <aside class="sidebar">
+      <!-- Topo da sidebar com logo e identificação do sistema -->
       <div class="sidebar-logo">
         <div class="logo-icon">🚗</div>
         <div class="logo-text">Controle KM<span>Painel Admin</span></div>
       </div>
+      <!-- Links de navegação interna da barra lateral -->
       <nav class="sidebar-nav">
         <div class="sidebar-section-label">Principal</div>
         <a href="index.html" class="nav-item"><span class="nav-icon">📊</span> Dashboard</a>
@@ -27,6 +35,7 @@
         <a href="abastecimentos.html" class="nav-item"><span class="nav-icon">⛽</span> Abastecimentos</a>
         <a href="manutencoes.html" class="nav-item active"><span class="nav-icon">🔧</span> Manutenções</a>
       </nav>
+      <!-- Rodapé da sidebar com informações do usuário administrador logado -->
       <div class="sidebar-footer">
         <div class="user-info">
           <div class="user-avatar" id="sidebar-avatar">A</div>
@@ -34,41 +43,52 @@
             <div class="user-name" id="sidebar-nome">Carregando...</div>
             <div class="user-role" id="sidebar-role">Administrador</div>
           </div>
+          <!-- Botão para encerrar a sessão (Logout) -->
           <button class="btn-logout" id="btn-logout" title="Sair">⏻</button>
         </div>
       </div>
     </aside>
 
+    <!-- Área de conteúdo principal da página -->
     <main class="main-content">
+      <!-- Cabeçalho da página com título e botão para nova manutenção -->
       <div class="page-header"
         style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
         <div>
           <h1 class="page-title">Manutenções</h1>
           <p class="page-subtitle">Controle de reparos e revisões</p>
         </div>
+        <!-- Botão que abre a modal de registro de nova manutenção -->
         <button class="btn btn-primary" id="btn-nova-manutencao">+ Nova Manutenção</button>
       </div>
 
+      <!-- Container para a tabela de listagem de manutenções -->
       <div class="table-card">
+        <!-- Div reservada onde o JavaScript injeta os dados da tabela dinamicamente -->
         <div id="tabela-wrapper">
+          <!-- Estado inicial exibindo carregamento -->
           <div class="empty-state">⏳ Carregando...</div>
         </div>
       </div>
     </main>
   </div>
 
-  <!-- Modal -->
+  <!-- Janela Modal (oculta por padrão) para inclusão de nova manutenção -->
   <div class="modal-overlay" id="modal-manutencao">
     <div class="modal">
       <div class="modal-header">
         <h2 class="modal-title">Registrar Manutenção</h2>
+        <!-- Botão para fechar a modal -->
         <button class="modal-close" id="modal-fechar">✕</button>
       </div>
+      <!-- Formulário para coletar os dados da manutenção -->
       <form id="form-manutencao">
         <div class="form-group">
           <label class="form-label">Veículo</label>
+          <!-- Menu de seleção do veículo vinculado à manutenção -->
           <select class="form-control" id="ma-veiculo" required></select>
         </div>
+        <!-- Grade de duas colunas para data e tipo de manutenção -->
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
           <div class="form-group">
             <label class="form-label">Data</label>
@@ -84,9 +104,11 @@
         </div>
         <div class="form-group">
           <label class="form-label">Descrição do serviço</label>
+          <!-- Campo para detalhar o que foi feito no veículo -->
           <input class="form-control" type="text" id="ma-desc" placeholder="Ex: Troca de óleo, Troca de pneus..."
             required />
         </div>
+        <!-- Grade de duas colunas para valor total e quilometragem -->
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
           <div class="form-group">
             <label class="form-label">Valor Total (R$)</label>
@@ -101,6 +123,7 @@
           <label class="form-label">Oficina / Realizada por</label>
           <input class="form-control" type="text" id="ma-oficina" placeholder="Nome da oficina" />
         </div>
+        <!-- Botões de ação da modal (Salvar ou Cancelar) -->
         <div class="modal-footer">
           <button type="button" class="btn btn-ghost" id="btn-cancelar">Cancelar</button>
           <button type="submit" class="btn btn-primary" id="btn-salvar">Salvar</button>
@@ -109,13 +132,21 @@
     </div>
   </div>
 
+  <!-- Scripts JavaScript fundamentais para funcionamento da lógica -->
   <script src="../js/api.js?v=2"></script>
   <script src="../js/auth.js?v=2"></script>
+  <!-- Lógica específica de gestão de manutenções -->
   <script src="../js/manutencoes.js?v=2"></script>
+  <!-- Script de inicialização da página -->
   <script>
+    // Valida se o usuário tem permissão de administrador para acessar
     const u = Auth.require('admin');
-    if (u) { preencherSidebar(u); initMobileMenu(); initManutencoes(); }
+    if (u) { 
+      // Executa as rotinas de preenchimento da sidebar e inicialização do módulo
+      preencherSidebar(u); 
+      initMobileMenu(); 
+      initManutencoes(); 
+    }
   </script>
 </body>
-
 </html>

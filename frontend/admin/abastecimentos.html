@@ -1,22 +1,30 @@
 <!DOCTYPE html>
+<!-- Define a linguagem da página como português brasileiro -->
 <html lang="pt-BR">
-
+<!-- Início do cabeçalho da página (metadados e estilos) -->
 <head>
   <meta charset="UTF-8" />
+  <!-- Garante que o layout se ajuste corretamente a dispositivos móveis -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Título da página exibido na aba do navegador -->
   <title>Abastecimentos — Admin | Controle KM</title>
+  <!-- Link para o arquivo CSS central do projeto -->
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 
 <body>
+  <!-- Botão de menu hambúrguer para dispositivos móveis -->
   <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
 
   <div class="app-layout">
+    <!-- Barra lateral de navegação (Sidebar) -->
     <aside class="sidebar">
+      <!-- Topo da sidebar com logo e identificação do sistema -->
       <div class="sidebar-logo">
         <div class="logo-icon">🚗</div>
         <div class="logo-text">Controle KM<span>Painel Admin</span></div>
       </div>
+      <!-- Links de navegação interna da barra lateral -->
       <nav class="sidebar-nav">
         <div class="sidebar-section-label">Principal</div>
         <a href="index.html" class="nav-item"><span class="nav-icon">📊</span> Dashboard</a>
@@ -27,6 +35,7 @@
         <a href="abastecimentos.html" class="nav-item active"><span class="nav-icon">⛽</span> Abastecimentos</a>
         <a href="manutencoes.html" class="nav-item"><span class="nav-icon">🔧</span> Manutenções</a>
       </nav>
+      <!-- Rodapé da sidebar com informações do usuário logado -->
       <div class="sidebar-footer">
         <div class="user-info">
           <div class="user-avatar" id="sidebar-avatar">A</div>
@@ -34,45 +43,57 @@
             <div class="user-name" id="sidebar-nome">Carregando...</div>
             <div class="user-role" id="sidebar-role">Administrador</div>
           </div>
+          <!-- Botão para encerrar a sessão (Logout) -->
           <button class="btn-logout" id="btn-logout" title="Sair">⏻</button>
         </div>
       </div>
     </aside>
 
+    <!-- Área de conteúdo principal da página -->
     <main class="main-content">
+      <!-- Cabeçalho da página com título e botão para novo registro -->
       <div class="page-header"
         style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
         <div>
           <h1 class="page-title">Abastecimentos</h1>
           <p class="page-subtitle">Histórico de consumo da frota</p>
         </div>
+        <!-- Botão que dispara a abertura da modal de registro -->
         <button class="btn btn-primary" id="btn-novo-abastecimento">+ Novo Registro</button>
       </div>
 
+      <!-- Container para a tabela de listagem de abastecimentos -->
       <div class="table-card">
+        <!-- Div reservada onde o JavaScript injeta os dados da tabela -->
         <div id="tabela-wrapper">
+          <!-- Estado inicial de carregamento -->
           <div class="empty-state">⏳ Carregando...</div>
         </div>
       </div>
     </main>
   </div>
 
-  <!-- Modal -->
+  <!-- Janela Modal (oculta por padrão) para inclusão de novo abastecimento -->
   <div class="modal-overlay" id="modal-abastecimento">
     <div class="modal">
       <div class="modal-header">
         <h2 class="modal-title">Registrar Abastecimento</h2>
+        <!-- Botão para fechar a modal -->
         <button class="modal-close" id="modal-fechar">✕</button>
       </div>
+      <!-- Formulário de coleta dos dados de abastecimento -->
       <form id="form-abastecimento">
         <div class="form-group">
           <label class="form-label">Veículo</label>
+          <!-- Menu de seleção do veículo (preenchido dinamicamente) -->
           <select class="form-control" id="ab-veiculo" required></select>
         </div>
         <div class="form-group">
           <label class="form-label">Motorista</label>
+          <!-- Menu de seleção do motorista (preenchido dinamicamente) -->
           <select class="form-control" id="ab-motorista" required></select>
         </div>
+        <!-- Grade de duas colunas para data e quilometragem -->
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
           <div class="form-group">
             <label class="form-label">Data</label>
@@ -83,6 +104,7 @@
             <input class="form-control" type="number" id="ab-km" placeholder="0" required />
           </div>
         </div>
+        <!-- Grade de duas colunas para litros e valor total -->
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
           <div class="form-group">
             <label class="form-label">Litros</label>
@@ -97,6 +119,7 @@
           <label class="form-label">Posto / Local (Opcional)</label>
           <input class="form-control" type="text" id="ab-posto" placeholder="Nome do posto" />
         </div>
+        <!-- Botões de ação da modal (Salvar ou Cancelar) -->
         <div class="modal-footer">
           <button type="button" class="btn btn-ghost" id="btn-cancelar">Cancelar</button>
           <button type="submit" class="btn btn-primary" id="btn-salvar">Salvar</button>
@@ -105,13 +128,21 @@
     </div>
   </div>
 
+  <!-- Inclusão dos scripts JavaScript fundamentais -->
   <script src="../js/api.js?v=2"></script>
   <script src="../js/auth.js?v=2"></script>
+  <!-- Lógica específica de gestão de abastecimentos -->
   <script src="../js/abastecimentos.js?v=2"></script>
+  <!-- Script de inicialização dos dados da página -->
   <script>
+    // Valida se o usuário tem perfil de administrador para acessar
     const u = Auth.require('admin');
-    if (u) { preencherSidebar(u); initMobileMenu(); initAbastecimentos(); }
+    if (u) { 
+      // Inicializa os dados da sidebar e do módulo de abastecimentos
+      preencherSidebar(u); 
+      initMobileMenu(); 
+      initAbastecimentos(); 
+    }
   </script>
 </body>
-
 </html>

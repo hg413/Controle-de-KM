@@ -1,29 +1,38 @@
 <!DOCTYPE html>
+<!-- Especifica que o conteúdo está em português brasileiro -->
 <html lang="pt-BR">
-
+<!-- Cabeçalho com as configurações fundamentais da página -->
 <head>
   <meta charset="UTF-8" />
+  <!-- Garante que a visualização se adapte a celulares e tablets -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Título personalizado para a área do motorista -->
   <title>Painel do Motorista | Controle KM</title>
+  <!-- Importação do arquivo de estilos (CSS) principal -->
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 
 <body>
+  <!-- Botão de ícone (hamburguer) para controle do menu mobile -->
   <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
 
   <div class="app-layout">
+    <!-- Barra lateral com logo e links de navegação específicos para o motorista -->
     <aside class="sidebar">
       <div class="sidebar-logo">
         <div class="logo-icon">🚗</div>
         <div class="logo-text">Controle KM<span>Painel Motorista</span></div>
       </div>
       <nav class="sidebar-nav">
+        <!-- Seção de navegação principal -->
         <div class="sidebar-section-label">Principal</div>
         <a href="index.html" class="nav-item active"><span class="nav-icon">🏠</span> Início</a>
+        <!-- Seção de navegação da frota -->
         <div class="sidebar-section-label">Frota</div>
         <a href="abastecimentos.html" class="nav-item"><span class="nav-icon">⛽</span> Abastecimentos</a>
         <a href="manutencoes.html" class="nav-item"><span class="nav-icon">🔧</span> Manutenções</a>
       </nav>
+      <!-- Rodapé da barra lateral com os dados do motorista logado -->
       <div class="sidebar-footer">
         <div class="user-info">
           <div class="user-avatar" id="sidebar-avatar">M</div>
@@ -31,34 +40,43 @@
             <div class="user-name" id="sidebar-nome">Carregando...</div>
             <div class="user-role" id="sidebar-role">Motorista</div>
           </div>
+          <!-- Botão para desconectar do aplicativo -->
           <button class="btn-logout" id="btn-logout" title="Sair">⏻</button>
         </div>
       </div>
     </aside>
 
+    <!-- Espaço reservado para o conteúdo central do dashboard -->
     <main class="main-content">
       <div class="page-header">
+        <!-- Saudação dinâmica que inclui o nome do motorista -->
         <h1 class="page-title">Olá, <span id="nome-motorista">Motorista</span>! 👋</h1>
+        <!-- Exibe a data atual por extenso -->
         <p class="page-subtitle" id="data-hoje"></p>
       </div>
 
+      <!-- Grade de cartões de acesso rápido às ações do dia a dia -->
       <div class="cards-grid">
+        <!-- Card para iniciar registro de viagem (Funcionalidade futura) -->
         <div class="card" style="cursor:pointer;border-color:var(--accent)"
           onclick="alert('Em breve: Registro de Viagem')">
           <div class="card-icon">📋</div>
           <div class="card-label">Ação</div>
           <div style="font-size:16px;font-weight:600;margin-top:4px;">Registrar Viagem</div>
         </div>
+        <!-- Card de atalho para enviar novo registro de abastecimento -->
         <div class="card" style="cursor:pointer" onclick="location.href='abastecimentos.html'">
           <div class="card-icon">⛽</div>
           <div class="card-label">Ação</div>
           <div style="font-size:16px;font-weight:600;margin-top:4px;">Registrar Abastecimento</div>
         </div>
+        <!-- Card de atalho para reportar uma manutenção realizada -->
         <div class="card" style="cursor:pointer" onclick="location.href='manutencoes.html'">
           <div class="card-icon">🔧</div>
           <div class="card-label">Ação</div>
           <div style="font-size:16px;font-weight:600;margin-top:4px;">Registrar Manutenção</div>
         </div>
+        <!-- Card para comunicar avarias ou problemas (Funcionalidade futura) -->
         <div class="card" style="cursor:pointer" onclick="alert('Em breve: Ocorrência')">
           <div class="card-icon">⚠️</div>
           <div class="card-label">Ação</div>
@@ -66,10 +84,12 @@
         </div>
       </div>
 
+      <!-- Container para listar as viagens mais recentes que o motorista fez -->
       <div class="table-card">
         <div class="table-header">
           <span class="table-title">Últimas Viagens</span>
         </div>
+        <!-- Estado inicial informando a ausência de registros (Empty state) -->
         <div class="empty-state">
           <div class="empty-icon">🛣️</div>
           <p>Nenhuma viagem registrada ainda.</p>
@@ -78,21 +98,28 @@
     </main>
   </div>
 
+  <!-- Inclusão dos scripts JavaScript essenciais -->
   <script src="../js/api.js"></script>
   <script src="../js/auth.js"></script>
+  <!-- Lógica interna para carregar os dados específicos desta tela -->
   <script>
+    // Valida se o usuário logado tem permissão de 'motorista'
     const usuario = Auth.require('motorista');
     if (usuario) {
+      // Chama funções globais do auth.js para setar os nomes na sidebar
       preencherSidebar(usuario);
+      // Ativa o menu hambúrguer para celular
       initMobileMenu();
+      // Extrai o primeiro nome do usuário para uma saudação mais amigável
       document.getElementById('nome-motorista').textContent = usuario.nome.split(' ')[0];
 
+      // Formata a data de hoje para aparecer como (Ex: Segunda-feira, 24 de março...)
       const hoje = new Date().toLocaleDateString('pt-BR', {
         weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
       });
+      // Aplica a data formatada no subtítulo da página colocando a primeira letra em maiúsculo
       document.getElementById('data-hoje').textContent = hoje.charAt(0).toUpperCase() + hoje.slice(1);
     }
   </script>
 </body>
-
 </html>
