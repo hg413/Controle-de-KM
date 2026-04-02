@@ -23,7 +23,7 @@ Sistema de gerenciamento de frota de veículos desenvolvido em PHP e JavaScript,
 
 ## ✍️ Autor
 <<<<<<< HEAD
-Desenvolvido por hg413.
+Desenvolvido por Bruno Lima.
 
 ---
 Para uma documentação técnica completa de todos os módulos, banco de dados e APIs, consulte o arquivo [DOCUMENTACAO.md](DOCUMENTACAO.md).
