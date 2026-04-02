@@ -1,4 +1,4 @@
-# Documentação do Sistema - Controle de KM 🚗
+# Documentação do Sistema - Controle de KM 
 
 Este documento fornece uma visão detalhada do sistema de gerenciamento de frota "Controle KM".
 
