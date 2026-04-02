@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!-- Especifica a linguagem da página como português brasileiro -->
+<html lang="pt-BR">
+<!-- Cabeçalho com metadados e links de estilo -->
+
+<head>
+  <!-- Conjunto de caracteres universal -->
+  <meta charset="UTF-8" />
+  <!-- Define que o layout se ajusta a dispositivos móveis -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Título visível na aba do navegador -->
+  <title>Dashboard — Admin | Controle KM</title>
+  <!-- Link para o arquivo CSS central do projeto (um nível acima) -->
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<!-- Corpo principal do documento -->
+
+<body>
+
+  <!-- Botão de menu para dispositivos móveis -->
+  <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+
+  <!-- Layout principal com barra lateral e conteúdo centralizado -->
+  <div class="app-layout">
+    <!-- Barra lateral de navegação (Sidebar) -->
+    <aside class="sidebar">
+      <!-- Topo da sidebar com logo e identificação do painel -->
+      <div class="sidebar-logo">
+        <div class="logo-icon">🚗</div>
+        <div class="logo-text">
+          Controle KM
+          <span>Painel Admin</span>
+        </div>
+      </div>
+
+      <!-- Links de navegação interna do sistema -->
+      <nav class="sidebar-nav">
+        <!-- Rótulo da seção principal -->
+        <div class="sidebar-section-label">Principal</div>
+        <!-- Link para a página inicial do dashboard (ativo por padrão) -->
+        <a href="index.html" class="nav-item active">
+          <span class="nav-icon">📊</span> Dashboard
+        </a>
+        <a href="registro_diario.html" class="nav-item"><span class="nav-icon">📋</span> Registro Diário</a>
+
+        <!-- Rótulo da seção de cadastros -->
+        <div class="sidebar-section-label">Cadastros</div>
+        <!-- Link para gerenciamento de usuários -->
+        <a href="usuarios.html" class="nav-item">
+          <span class="nav-icon">👥</span> Usuários
+        </a>
+        <!-- Link para gerenciamento de veículos da frota -->
+        <a href="veiculos.html" class="nav-item">
+          <span class="nav-icon">🚙</span> Veículos
+        </a>
+
+        <!-- Rótulo da seção de movimentação da frota -->
+        <div class="sidebar-section-label">Frota</div>
+        <!-- Link para registros de abastecimento -->
+        <a href="abastecimentos.html" class="nav-item">
+          <span class="nav-icon">⛽</span> Abastecimentos
+        </a>
+        <!-- Link para cronograma/histórico de manutenções -->
+        <a href="manutencoes.html" class="nav-item">
+          <span class="nav-icon">🔧</span> Manutenções
+        </a>
+        <a href="ocorrencias.html" class="nav-item"><span class="nav-icon">⚠️</span> Ocorrências</a>
+      </nav>
+
+      <!-- Rodapé da sidebar com informações do usuário logado -->
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <!-- Letra inicial ou avatar do usuário -->
+          <div class="user-avatar" id="sidebar-avatar">A</div>
+          <!-- Detalhes textuais de identificação -->
+          <div class="user-details">
+            <div class="user-name" id="sidebar-nome">Carregando...</div>
+            <div class="user-role" id="sidebar-role">Administrador</div>
+          </div>
+          <!-- Botão para encerrar a sessão (Logout) -->
+          <button class="btn-logout" id="btn-logout" title="Sair">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Área de conteúdo principal à direita da sidebar -->
+    <main class="main-content">
+      <div class="page-header">
+        <!-- Saudação dinâmica que inclui o nome do administrador -->
+        <h1 class="page-title">Olá, <span id="nome-admin">Admin</span>! 👋</h1>
+        <!-- Exibe a data atual por extenso -->
+        <p class="page-subtitle" id="data-hoje"></p>
+      </div>
+
+      <!-- Grade de cartões de acesso rápido às ações do dia a dia idênticas as do motorista -->
+      <div class="cards-grid">
+        <!-- Card para iniciar registro de viagem -->
+        <div class="card" style="cursor:pointer;border-color:var(--accent)"
+          onclick="location.href='registro_diario.html'">
+          <div class="card-icon">📋</div>
+          <div class="card-label">Ação</div>
+          <div style="font-size:16px;font-weight:600;margin-top:4px;">Registrar Viagem</div>
+        </div>
+        <!-- Card de atalho para enviar novo registro de abastecimento -->
+        <div class="card" style="cursor:pointer" onclick="location.href='abastecimentos.html'">
+          <div class="card-icon">⛽</div>
+          <div class="card-label">Ação</div>
+          <div style="font-size:16px;font-weight:600;margin-top:4px;">Registrar Abastecimento</div>
+        </div>
+        <!-- Card de atalho para reportar uma manutenção realizada -->
+        <div class="card" style="cursor:pointer" onclick="location.href='manutencoes.html'">
+          <div class="card-icon">🔧</div>
+          <div class="card-label">Ação</div>
+          <div style="font-size:16px;font-weight:600;margin-top:4px;">Registrar Manutenção</div>
+        </div>
+        <!-- Card para comunicar avarias ou problemas -->
+        <div class="card" style="cursor:pointer" onclick="location.href='ocorrencias.html'">
+          <div class="card-icon">⚠️</div>
+          <div class="card-label">Ação</div>
+          <div style="font-size:16px;font-weight:600;margin-top:4px;">Registrar Ocorrência</div>
+        </div>
+      </div>
+
+      <!-- Container para listar as viagens mais recentes -->
+      <div class="table-card">
+        <div class="table-header">
+          <span class="table-title">Últimas Viagens</span>
+        </div>
+        <!-- Estado inicial informando a ausência de registros (Empty state) -->
+        <div class="empty-state">
+          <div class="empty-icon">🛣️</div>
+          <p>Nenhuma viagem registrada ainda.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Carregamento das funções de comunicação com o servidor -->
+  <script src="../js/api.js?v=2"></script>
+  <!-- Funções de segurança e estado da sessão -->
+  <script src="../js/auth.js?v=2"></script>
+  <!-- Lógica específica desta tela -->
+  <script>
+    // Exige que o usuário seja 'admin' para ver esta página, senão redireciona
+    const usuario = Auth.require('admin');
+    if (usuario) {
+      // Preenche os nomes e avatar na barra lateral com dados do usuário logado
+      preencherSidebar(usuario);
+      // Inicializa o funcionamento do menu mobile hambúrguer
+      initMobileMenu();
+
+      // Extrai o primeiro nome do usuário para uma saudação amigável
+      document.getElementById('nome-admin').textContent = usuario.nome.split(' ')[0];
+
+      // Formata a data de hoje
+      const hoje = new Date().toLocaleDateString('pt-BR', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      });
+      // Aplica a data formatada
+      document.getElementById('data-hoje').textContent = hoje.charAt(0).toUpperCase() + hoje.slice(1);
+    }
+  </script>
+</body>
+
+</html>

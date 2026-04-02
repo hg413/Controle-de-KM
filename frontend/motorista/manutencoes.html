@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<!-- Especifica que o documento segue o padrão HTML5 e o idioma é português brasileiro -->
+<html lang="pt-BR">
+<!-- Início da seção de metadados e recursos da página -->
+<head>
+  <meta charset="UTF-8" />
+  <!-- Garante que a interface seja adaptável para dispositivos móveis -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Título principal exibido na guia do navegador -->
+  <title>Manutenções — Motorista | Controle KM</title>
+  <!-- Link para o arquivo central de estilização CSS -->
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body>
+  <!-- Botão de menu hamburguer para navegação em telas pequenas -->
+  <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+
+  <div class="app-layout">
+    <!-- Barra lateral de navegação (Sidebar) para motoristas -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🚗</div>
+        <div class="logo-text">Controle KM<span>Painel Motorista</span></div>
+      </div>
+      <!-- Itens de navegação da barra lateral -->
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-label">Principal</div>
+        <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span> Início</a>
+        <a href="registro_diario.html" class="nav-item"><span class="nav-icon">📋</span> Registro Diário</a>
+        <div class="sidebar-section-label">Frota</div>
+        <a href="abastecimentos.html" class="nav-item"><span class="nav-icon">⛽</span> Abastecimentos</a>
+        <a href="manutencoes.html" class="nav-item active"><span class="nav-icon">🔧</span> Manutenções</a>
+        <a href="ocorrencias.html" class="nav-item"><span class="nav-icon">⚠️</span> Ocorrências</a>
+      </nav>
+      <!-- Rodapé da sidebar com dados básicos do usuário e botão de logout -->
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="sidebar-avatar">M</div>
+          <div class="user-details">
+            <div class="user-name" id="sidebar-nome">Carregando...</div>
+            <div class="user-role" id="sidebar-role">Motorista</div>
+          </div>
+          <button class="btn-logout" id="btn-logout" title="Sair">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Área de conteúdo carregada à direita no layout principal -->
+    <main class="main-content">
+      <!-- Cabeçalho da página com título descritivo e botão de ação -->
+      <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h1 class="page-title">Histórico de Manutenções</h1>
+          <p class="page-subtitle">Revisões e reparos da frota</p>
+        </div>
+        <!-- Botão para abrir o modal de inserção de novo registro de manutenção -->
+        <button class="btn btn-primary" id="btn-nova-manutencao">+ Nova Manutenção</button>
+      </div>
+
+      <!-- Cartão estilizado que contém a tabela de listagem -->
+      <div class="table-card">
+        <!-- Elemento onde o JavaScript injetará dinamicamente os registros buscados -->
+        <div id="tabela-wrapper">
+          <!-- Texto informativo exibido enquanto os dados não são carregados -->
+          <div class="empty-state">⏳ Carregando...</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Estrutura da janela modal para registro de manutenção -->
+  <div class="modal-overlay" id="modal-manutencao">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Registrar Manutenção</h2>
+        <!-- Botão 'X' para fechar a modal -->
+        <button class="modal-close" id="modal-fechar">✕</button>
+      </div>
+      <!-- Formulário para envio das informações da manutenção -->
+      <form id="form-manutencao">
+        <div class="form-group">
+          <label class="form-label">Veículo</label>
+          <!-- Menu de seleção do veículo (preenchido dinamicamente via backend) -->
+          <select class="form-control" id="ma-veiculo" required></select>
+        </div>
+        <!-- Grade de duas colunas para data e tipo do serviço -->
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Data</label>
+            <input class="form-control" type="date" id="ma-data" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tipo</label>
+            <select class="form-control" id="ma-tipo">
+              <option value="preventiva">Preventiva</option>
+              <option value="corretiva">Corretiva</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Descrição do serviço</label>
+          <input class="form-control" type="text" id="ma-desc" placeholder="Ex: Troca de óleo..." required />
+        </div>
+        <!-- Grade de duas colunas para valor monetário e quilometragem -->
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Valor Total (R$)</label>
+            <input class="form-control" type="number" step="0.01" id="ma-valor" placeholder="0.00" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">KM no momento</label>
+            <input class="form-control" type="number" id="ma-km" placeholder="opcional" />
+          </div>
+        </div>
+        <!-- Seção de botões de rodapé da modal -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-salvar">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Carregamento das bibliotecas utilitárias e de lógica -->
+  <script src="../js/api.js?v=2"></script>
+  <script src="../js/auth.js?v=2"></script>
+  <script src="../js/manutencoes.js?v=2"></script>
+  <!-- Script de auto-execução para inicializar a página após o carregamento -->
+  <script>
+    // Valida o acesso do usuário (exige perfil de 'motorista')
+    const u = Auth.require('motorista');
+    if (u) { 
+      // Executa preenchimento da interface e ativa ouvintes de eventos
+      preencherSidebar(u); 
+      initMobileMenu(); 
+      initManutencoes(); 
+    }
+  </script>
+</body>
+</html>
+

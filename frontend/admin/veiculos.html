@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!-- Define a linguagem da página como português brasileiro -->
+<html lang="pt-BR">
+<!-- Início do cabeçalho da página (metadados e estilos) -->
+
+<head>
+  <meta charset="UTF-8" />
+  <!-- Garante que a página seja responsiva em dispositivos móveis -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Título da página exibido na aba do navegador -->
+  <title>Veículos — Admin | Controle KM</title>
+  <!-- Link para o arquivo CSS central do projeto -->
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body>
+  <!-- Botão de menu hambúrguer para dispositivos móveis -->
+  <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+
+  <div class="app-layout">
+    <!-- Barra lateral de navegação (Sidebar) -->
+    <aside class="sidebar">
+      <!-- Topo da sidebar com logo e identificação do painel admin -->
+      <div class="sidebar-logo">
+        <div class="logo-icon">🚗</div>
+        <div class="logo-text">Controle KM<span>Painel Admin</span></div>
+      </div>
+      <!-- Itens de navegação da barra lateral -->
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-label">Principal</div>
+        <a href="index.html" class="nav-item"><span class="nav-icon">📊</span> Dashboard</a>
+        <a href="registro_diario.html" class="nav-item"><span class="nav-icon">📋</span> Registro Diário</a>
+        <div class="sidebar-section-label">Cadastros</div>
+        <a href="usuarios.html" class="nav-item"><span class="nav-icon">👥</span> Usuários</a>
+        <a href="veiculos.html" class="nav-item active"><span class="nav-icon">🚙</span> Veículos</a>
+        <div class="sidebar-section-label">Frota</div>
+        <a href="abastecimentos.html" class="nav-item"><span class="nav-icon">⛽</span> Abastecimentos</a>
+        <a href="manutencoes.html" class="nav-item"><span class="nav-icon">🔧</span> Manutenções</a>
+        <a href="ocorrencias.html" class="nav-item"><span class="nav-icon">⚠️</span> Ocorrências</a>
+      </nav>
+      <!-- Rodapé da sidebar com dados do usuário logado e opção de sair -->
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="sidebar-avatar">A</div>
+          <div class="user-details">
+            <div class="user-name" id="sidebar-nome">Carregando...</div>
+            <div class="user-role" id="sidebar-role">Administrador</div>
+          </div>
+          <!-- Botão para encerrar a sessão (Logout) -->
+          <button class="btn-logout" id="btn-logout" title="Sair">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Área de conteúdo principal da página -->
+    <main class="main-content">
+      <!-- Cabeçalho da página com título e botão de novo veículo -->
+      <div class="page-header"
+        style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h1 class="page-title">Veículos</h1>
+          <p class="page-subtitle">Gerencie os veículos da frota</p>
+        </div>
+        <!-- Botão que abre a modal para cadastro de novo veículo -->
+        <button class="btn btn-primary" id="btn-novo-veiculo">+ Novo Veículo</button>
+      </div>
+
+      <!-- Container para a tabela de listagem da frota -->
+      <div class="table-card">
+        <div class="table-header">
+          <span class="table-title">Frota Cadastrada</span>
+        </div>
+        <!-- Div reservada onde o JavaScript injetará a tabela dinamicamente -->
+        <div id="tabela-wrapper">
+          <!-- Estado inicial exibindo carregamento -->
+          <div class="empty-state">
+            <div class="empty-icon">⏳</div>
+            <p>Carregando...</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Janela Modal (oculta por padrão) para inclusão de novo veículo -->
+  <div class="modal-overlay" id="modal-veiculo">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Novo Veículo</h2>
+
+        <!-- Botão para fechar a modal -->
+        <button class="modal-close" id="modal-fechar">✕</button>
+      </div>
+      <!-- Formulário para coletar os dados do novo veículo -->
+      <form id="form-veiculo">
+        <div class="form-group">
+          <label class="form-label">Placa</label>
+
+          <!-- Campo obrigatório para a placa do carro -->
+          <input class="form-control" type="text" id="veiculo-placa" placeholder="Ex: ABC-1234" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Motorista Responsável (opcional)</label>
+          <!-- Menu suspenso para selecionar um motorista vinculado ao veículo -->
+          <select class="form-control" id="veiculo-motorista">
+            <option value="">Nenhum</option>
+          </select>
+        </div>
+        <!-- Botões de ação do formulário da modal -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-salvar">Cadastrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts JavaScript fundamentais para funcionamento da página -->
+  <script src="../js/api.js?v=2"></script>
+  <script src="../js/auth.js?v=2"></script>
+  <!-- Lógica específica do módulo de veículos -->
+  <script src="../js/veiculos.js?v=2"></script>
+  <!-- Script de inicialização da página -->
+  <script>
+    // Valida se o usuário logado tem perfil de administrador
+    const usuario = Auth.require('admin');
+    if (usuario) {
+      // Executa as rotinas de visualização e lógica do CRUD de veículos
+      preencherSidebar(usuario);
+      initMobileMenu();
+      initVeiculos();
+    }
+  </script>
+</body>
+
+</html>

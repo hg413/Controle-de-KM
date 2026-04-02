@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!-- Especifica a linguagem da página como português brasileiro -->
+<html lang="pt-BR">
+<!-- Cabeçalho com metadados e links de estilo -->
+
+<head>
+  <meta charset="UTF-8" />
+  <!-- Garante que o layout se ajuste a janelas de diferentes tamanhos -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Título visível na aba do navegador -->
+  <title>Usuários — Admin | Controle KM</title>
+  <!-- Link para o arquivo CSS central do projeto -->
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body>
+  <!-- Botão de menu hamburguer para dispositivos móveis -->
+  <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+
+  <div class="app-layout">
+    <!-- Barra lateral de navegação (Sidebar) -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🚗</div>
+        <div class="logo-text">Controle KM<span>Painel Admin</span></div>
+      </div>
+      <nav class="sidebar-nav">
+
+        <!-- Rótulo e link para a seção Dashboard -->
+        <div class="sidebar-section-label">Principal</div>
+        <a href="index.html" class="nav-item"><span class="nav-icon">📊</span> Dashboard</a>
+        <a href="registro_diario.html" class="nav-item"><span class="nav-icon">📋</span> Registro Diário</a>
+
+        <!-- Seção de cadastros com o link de usuários ativo -->
+        <div class="sidebar-section-label">Cadastros</div>
+        <a href="usuarios.html" class="nav-item active"><span class="nav-icon">👥</span> Usuários</a>
+        <a href="veiculos.html" class="nav-item"><span class="nav-icon">🚙</span> Veículos</a>
+
+        <!-- Rótulo e links para a seção Frota -->
+        <div class="sidebar-section-label">Frota</div>
+        <a href="abastecimentos.html" class="nav-item"><span class="nav-icon">⛽</span> Abastecimentos</a>
+        <a href="manutencoes.html" class="nav-item"><span class="nav-icon">🔧</span> Manutenções</a>
+        <a href="ocorrencias.html" class="nav-item"><span class="nav-icon">⚠️</span> Ocorrências</a>
+      </nav>
+
+      <!-- Rodapé da sidebar com dados do usuário logado -->
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="sidebar-avatar">A</div>
+          <div class="user-details">
+            <div class="user-name" id="sidebar-nome">Carregando...</div>
+            <div class="user-role" id="sidebar-role">Administrador</div>
+          </div>
+
+          <!-- Botão para deslogar do sistema -->
+          <button class="btn-logout" id="btn-logout" title="Sair">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Conteúdo principal onde a tabela de usuários será exibida -->
+    <main class="main-content">
+      <div class="page-header"
+        style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h1 class="page-title">Usuários</h1>
+          <p class="page-subtitle">Gerencie os usuários do sistema</p>
+        </div>
+
+        <!-- Botão para abrir o modal de criação de novo usuário -->
+        <button class="btn btn-primary" id="btn-novo-usuario">+ Novo Usuário</button>
+      </div>
+
+      <!-- Cartão estilizado que envolve a tabela de dados -->
+      <div class="table-card">
+        <div class="table-header">
+          <span class="table-title">Lista de Usuários</span>
+        </div>
+
+        <!-- Div reservada para que o JavaScript injete a tabela dinamicamente -->
+        <div id="tabela-wrapper">
+
+          <!-- Estado inicial de carregamento -->
+          <div class="empty-state">
+            <div class="empty-icon">⏳</div>
+            <p>Carregando...</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Janela modal (oculta por padrão) para Criar ou Editar Usuários -->
+  <div class="modal-overlay" id="modal-usuario">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-titulo">Novo Usuário</h2>
+
+        <!-- Botão 'X' para fechar a modal -->
+        <button class="modal-close" id="modal-fechar">✕</button>
+      </div>
+
+      <!-- Formulário de cadastro de usuário -->
+      <form id="form-usuario">
+
+        <!-- Campo oculto para armazenar o ID em caso de edição -->
+        <input type="hidden" id="usuario-id" />
+        <div class="form-group">
+          <label class="form-label">Nome completo</label>
+          <input class="form-control" type="text" id="usuario-nome" placeholder="Nome do usuário" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">E-mail</label>
+          <input class="form-control" type="email" id="usuario-email" placeholder="email@exemplo.com" required />
+        </div>
+        <div class="form-group" id="grupo-senha">
+          <label class="form-label">Senha</label>
+          <input class="form-control" type="password" id="usuario-senha" placeholder="Mínimo 6 caracteres" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Perfil</label>
+          <select class="form-control" id="usuario-perfil" required>
+            <option value="">Selecione...</option>
+            <option value="admin">Administrador</option>
+            <option value="motorista">Motorista</option>
+          </select>
+        </div>
+
+        <!-- Botões de ação do final do modal -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-salvar">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Inclusão dos scripts fundamentais (API e Autenticação) -->
+  <script src="../js/api.js?v=2"></script>
+  <script src="../js/auth.js?v=2"></script>
+
+  <!-- Inclusão da lógica de CRUD de usuários -->
+  <script src="../js/usuarios.js?v=2"></script>
+  <!-- Script de inicialização da página -->
+  <script>
+
+    // Garante que apenas administradores acessem esta página
+    const usuario = Auth.require('admin');
+    if (usuario) {
+
+      // Executa as rotinas de preenchimento de sidebar e inicialização do menu mobile e do CRUD
+      preencherSidebar(usuario);
+      initMobileMenu();
+      initUsuarios();
+    }
+  </script>
+</body>
+
+</html>

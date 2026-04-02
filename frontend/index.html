@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!-- Define o tipo do documento como HTML5 -->
+<html lang="pt-BR">
+<!-- Início do cabeçalho da página (configurações e metadados) -->
+<head>
+  <!-- Define o conjunto de caracteres como UTF-8 para suportar acentos -->
+  <meta charset="UTF-8" />
+  <!-- Configura a escala da viewport para garantir responsividade no mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Título da aba do navegador -->
+  <title>Controle KM — Login</title>
+  <!-- Descrição do site para buscadores e acessibilidade -->
+  <meta name="description" content="Sistema de controle de quilometragem de veículos da frota." />
+  <!-- Vincula o arquivo de estilos CSS externo -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<!-- Início do corpo da página -->
+<body>
+  <!-- Container principal centralizado da página de login -->
+  <div class="login-page">
+    <!-- Cartão visual que contém o formulário de login -->
+    <div class="login-card">
+      <!-- Seção do logotipo e boas-vindas -->
+      <div class="login-logo">
+        <div class="logo-circle">🚗</div>
+        <h1>Controle KM</h1>
+        <p>Gestão de frota — Faça login para continuar</p>
+      </div>
+
+      <!-- Espaço reservado para exibir mensagens de erro do login de forma dinâmica -->
+      <div class="login-error" id="login-error"></div>
+
+      <!-- Formulário que captura as credenciais do usuário -->
+      <form id="login-form">
+        <!-- Grupo de entrada para o e-mail -->
+        <div class="form-group">
+          <label class="form-label" for="email">E-mail</label>
+          <!-- Campo de e-mail obrigatório com exemplo de preenchimento -->
+          <input class="form-control" type="email" id="email" placeholder="seu@email.com" required />
+        </div>
+        <!-- Grupo de entrada para a senha -->
+        <div class="form-group">
+          <label class="form-label" for="senha">Senha</label>
+          <!-- Campo de senha obrigatório ocultando os caracteres digitados -->
+          <input class="form-control" type="password" id="senha" placeholder="••••••••" required />
+        </div>
+        <!-- Botão de ação para submissão do login -->
+        <button type="submit" class="login-btn" id="btn-login">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Inclusão do script da API (funções de comunicação com o servidor) -->
+  <script src="js/api.js?v=2"></script>
+  <!-- Inclusão do script de autenticação (gerenciamento de sessão e tokens) -->
+  <script src="js/auth.js?v=2"></script>
+  <!-- Bloco de código JavaScript específico da página de login -->
+  <script>
+    // Verifica se já existe um usuário logado no navegador
+    const u = Auth.get();
+    if (u) {
+      // Caso já esteja logado, redireciona o usuário para o painel correto conforme o perfil
+      location.href = u.perfil === 'admin' ? 'admin/index.html' : 'motorista/index.html';
+    }
+
+    // Monitora o evento de envio (submit) do formulário de login
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      // Bloqueia a atualização da página (comportamento padrão de formulário HTML)
+      e.preventDefault();
+      // Captura os dados digitados nos campos
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+      // Seleciona o botão de login para aplicar efeitos visuais
+      const btn = document.querySelector('.login-btn');
+
+      // Ativa o estado de carregamento e desabilita o botão (evita cliques repetidos)
+      btn.classList.add('loading');
+      btn.disabled = true;
+
+      // Realiza a chamada à API para validar as credenciais informadas
+      const { ok, data } = await Api.login(email, senha);
+
+      // Se o login for bem-sucedido e o servidor retornar o objeto do usuário
+      if (ok && data.usuario) {
+        // Salva os dados do usuário na memória persistente (LocalStorage)
+        Auth.save(data.usuario);
+        // Redireciona o usuário para a área administrativa ou do motorista
+        location.href = data.usuario.perfil === 'admin' ? 'admin/index.html' : 'motorista/index.html';
+      } else {
+        // Exibe o motivo da falha retornado pelo backend na tela
+        document.getElementById('login-error').textContent = data.message || 'Erro ao entrar. Verifique seus dados.';
+      }
+
+      // Finaliza o estado de carregamento e desbloqueia o botão de login
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    });
+  </script>
+</body>
+</html>

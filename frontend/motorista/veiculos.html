@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<!-- Especifica o idioma do documento como português brasileiro -->
+<html lang="pt-BR">
+<!-- Início do cabeçalho com metadados e folhas de estilo -->
+<head>
+  <meta charset="UTF-8" />
+  <!-- Torna a interface adaptável a diferentes tamanhos de tela -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Título da página exibido na aba do navegador -->
+  <title>Veículos — Painel | Controle KM</title>
+  <!-- Link para o arquivo CSS central -->
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body>
+  <!-- Botão para acionar o menu lateral em dispositivos móveis -->
+  <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+
+  <div class="app-layout">
+    <!-- Barra lateral de navegação -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🚗</div>
+        <!-- Identificação do sistema na sidebar -->
+        <div class="logo-text">Controle KM<span>Frota</span></div>
+      </div>
+      <nav class="sidebar-nav">
+        <!-- Links de navegação do usuário -->
+        <div class="sidebar-section-label">Principal</div>
+        <a href="index.html" class="nav-item"><span class="nav-icon">📊</span> Início</a>
+        <div class="sidebar-section-label">Frota</div>
+        <a href="abastecimentos.html" class="nav-item"><span class="nav-icon">⛽</span> Abastecimentos</a>
+        <a href="manutencoes.html" class="nav-item"><span class="nav-icon">🔧</span> Manutenções</a>
+        <!-- Este item está marcado como ativo nesta página -->
+        <a href="veiculos.html" class="nav-item active"><span class="nav-icon">🚙</span> Veículos</a>
+      </nav>
+      <!-- Rodapé da sidebar com dados do usuário logado -->
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="sidebar-avatar">U</div>
+          <div class="user-details">
+            <div class="user-name" id="sidebar-nome">Carregando...</div>
+            <div class="user-role" id="sidebar-role">Usuário</div>
+          </div>
+          <!-- Botão de encerramento de sessão -->
+          <button class="btn-logout" id="btn-logout" title="Sair">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Área principal de exibição de conteúdo -->
+    <main class="main-content">
+      <!-- Cabeçalho com título da seção e botão para novo cadastro -->
+      <div class="page-header"
+        style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h1 class="page-title">Veículos</h1>
+          <p class="page-subtitle">Listagem de veículos registrados</p>
+        </div>
+        <!-- Botão para registrar um novo veículo -->
+        <button class="btn btn-primary" id="btn-novo-veiculo">+ Novo Veículo</button>
+      </div>
+
+      <!-- Container da tabela de listagem -->
+      <div class="table-card">
+        <div class="table-header">
+          <span class="table-title">Veículos Cadastrados</span>
+        </div>
+        <!-- Elemento reservado para o JavaScript injetar a tabela dinamicamente -->
+        <div id="tabela-wrapper">
+          <div class="empty-state">
+            <div class="empty-icon">⏳</div>
+            <p>Carregando...</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Estrutura da janela modal para inclusão/edição de veículos -->
+  <div class="modal-overlay" id="modal-veiculo">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Novo Veículo</h2>
+        <button class="modal-close" id="modal-fechar">✕</button>
+      </div>
+      <!-- Formulário de coleta de dados do veículo -->
+      <form id="form-veiculo">
+        <div class="form-group">
+          <label class="form-label">Placa</label>
+          <input class="form-control" type="text" id="veiculo-placa" placeholder="Ex: ABC-1234" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Motorista Responsável (opcional)</label>
+          <select class="form-control" id="veiculo-motorista">
+            <option value="">Nenhum</option>
+          </select>
+        </div>
+        <!-- Rodapé da modal com botões de confirmar ou limpar -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-salvar">Cadastrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Inclusão dos scripts JavaScript essenciais -->
+  <script src="../js/api.js?v=2"></script>
+  <script src="../js/auth.js?v=2"></script>
+  <!-- Lógica específica do módulo de veículos -->
+  <script src="../js/veiculos.js?v=2"></script>
+  <!-- Bloco de inicialização da página -->
+  <script>
+    // Valida a sessão do usuário (permite qualquer usuário logado ver veículos)
+    const usuario = Auth.require(); 
+    if (usuario) { 
+      // Executa rotinas de montagem de tela e API
+      preencherSidebar(usuario); 
+      initMobileMenu(); 
+      initVeiculos(); 
+    }
+  </script>
+</body>
+</html>
