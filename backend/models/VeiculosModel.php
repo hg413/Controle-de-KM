@@ -42,46 +42,62 @@ class VeiculoModel
     // Método para cadastrar um novo veículo na frota
     public function create($placa, $motorista_id = null)
     {
-        // SQL preparado para inserção, evitando ataques de injeção
-        $sql = "INSERT INTO veiculos (placa, motorista_responsavel_id) VALUES (?, ?)";
-        // Prepara a query no servidor MySQL
-        $stmt = $this->conn->prepare($sql);
-        // Se a preparação falhar, retorna falso imediatamente
-        if (!$stmt)
-            return false;
+        try {
+            // Se o motorista não foi selecionado ou é inválido, garante que será nulo
+            if (empty($motorista_id)) {
+                $motorista_id = null;
+            }
 
-        // Vincula a placa (string) e o ID do motorista (inteiro) aos placeholders
-        $stmt->bind_param("si", $placa, $motorista_id);
-        // Executa a inserção no banco
-        $success = $stmt->execute();
-        // Fecha o statement para liberar memória
-        $stmt->close();
-        
-        // Retorna verdadeiro se o veículo foi cadastrado com sucesso
-        return $success;
+            // SQL preparado para inserção, evitando ataques de injeção
+            $sql = "INSERT INTO veiculos (placa, motorista_responsavel_id) VALUES (?, ?)";
+            // Prepara a query no servidor MySQL
+            $stmt = $this->conn->prepare($sql);
+            // Se a preparação falhar, retorna falso imediatamente
+            if (!$stmt)
+                return false;
+
+            // Vincula a placa (string) e o ID do motorista (inteiro). O PHP lidará com motorista_id sendo nulo corretamente
+            // se o motorista_id for uma variável nula.
+            $stmt->bind_param("si", $placa, $motorista_id);
+            
+            // Executa a inserção no banco
+            $success = $stmt->execute();
+            // Fecha o statement para liberar memória
+            $stmt->close();
+            
+            // Retorna verdadeiro se o veículo foi cadastrado com sucesso
+            return $success;
+        } catch (Exception $e) {
+            // Em caso de exceção (ex: placa duplicada ou erro de banco de dados), captura o erro de forma segura
+            // e retorna falso para que a controller possa lidar com a falha
+            return false;
+        }
     }
 
     // Método para excluir um veículo do sistema pelo seu ID único
     public function remove($id)
     {
-        // SQL para deleção do registro baseado na chave primária
-        $sql = "DELETE FROM veiculos WHERE id = ?";
-        // Prepara a instrução de deleção
-        $stmt = $this->conn->prepare($sql);
-        // Retorna falso caso ocorra erro na preparação
-        if (!$stmt)
+        try {
+            // SQL para deleção do registro baseado na chave primária
+            $sql = "DELETE FROM veiculos WHERE id = ?";
+            // Prepara a instrução de deleção
+            $stmt = $this->conn->prepare($sql);
+            // Retorna falso caso ocorra erro na preparação
+            if (!$stmt)
+                return false;
+
+            // Vincula o ID (inteiro) ao placeholder da query
+            $stmt->bind_param("i", $id);
+            // Executa a remoção física no banco de dados
+            $success = $stmt->execute();
+            // Fecha o statement
+            $stmt->close();
+
+            // Retorna se a operação de exclusão foi concluída
+            return $success;
+        } catch (Exception $e) {
             return false;
-
-        // Vincula o ID (inteiro) ao placeholder da query
-        $stmt->bind_param("i", $id);
-        // Executa a remoção física no banco de dados
-        $success = $stmt->execute();
-        // Fecha o statement
-        $stmt->close();
-
-        // Retorna se a operação de exclusão foi concluída
-        return $success;
+        }
     }
 }
 ?>
-

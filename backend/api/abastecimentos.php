@@ -72,7 +72,7 @@ function handlePost(AbastecimentoModel $model): void
     }
 
     // Tenta criar o registro de abastecimento usando o método do model
-    if ($model->create($v_id, $data_ab, $km, $litros, $valor, $data->posto ?? null)) {
+    if ($model->create($v_id, $m_id, $data_ab, $km, $litros, $valor, $data->posto ?? null)) {
         // Retorna sucesso 201 (Created)
         respond(201, "Abastecimento registrado com sucesso.");
     } else {

@@ -63,9 +63,9 @@ async function carregarVeiculos() {
   // Executa as buscas de veículos e usuários em paralelo para otimizar tempo
   const [veiculosRes, usuariosRes] = await Promise.all([Api.getVeiculos(), Api.getUsuarios()]);
 
-  // Filtra os usuários para mostrar apenas perfis de motorista no campo de seleção
+  // Filtra os usuários para mostrar tanto motoristas quanto administradores, caso queiram assumir carro
   const motoristas = Array.isArray(usuariosRes.data)
-    ? usuariosRes.data.filter(u => u.perfil === 'motorista')
+    ? usuariosRes.data.filter(u => u.perfil === 'motorista' || u.perfil === 'admin')
     : [];
 
   // Preenche dinamicamente o select do formulário com os motoristas disponíveis

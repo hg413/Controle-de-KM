@@ -27,10 +27,12 @@
         <!-- Seção de navegação principal -->
         <div class="sidebar-section-label">Principal</div>
         <a href="index.html" class="nav-item active"><span class="nav-icon">🏠</span> Início</a>
+        <a href="registro_diario.html" class="nav-item"><span class="nav-icon">📋</span> Registro Diário</a>
         <!-- Seção de navegação da frota -->
         <div class="sidebar-section-label">Frota</div>
         <a href="abastecimentos.html" class="nav-item"><span class="nav-icon">⛽</span> Abastecimentos</a>
         <a href="manutencoes.html" class="nav-item"><span class="nav-icon">🔧</span> Manutenções</a>
+        <a href="ocorrencias.html" class="nav-item"><span class="nav-icon">⚠️</span> Ocorrências</a>
       </nav>
       <!-- Rodapé da barra lateral com os dados do motorista logado -->
       <div class="sidebar-footer">
@@ -59,7 +61,7 @@
       <div class="cards-grid">
         <!-- Card para iniciar registro de viagem (Funcionalidade futura) -->
         <div class="card" style="cursor:pointer;border-color:var(--accent)"
-          onclick="alert('Em breve: Registro de Viagem')">
+          onclick="location.href='registro_diario.html'">
           <div class="card-icon">📋</div>
           <div class="card-label">Ação</div>
           <div style="font-size:16px;font-weight:600;margin-top:4px;">Registrar Viagem</div>
@@ -76,8 +78,8 @@
           <div class="card-label">Ação</div>
           <div style="font-size:16px;font-weight:600;margin-top:4px;">Registrar Manutenção</div>
         </div>
-        <!-- Card para comunicar avarias ou problemas (Funcionalidade futura) -->
-        <div class="card" style="cursor:pointer" onclick="alert('Em breve: Ocorrência')">
+        <!-- Card para comunicar avarias ou problemas -->
+        <div class="card" style="cursor:pointer" onclick="location.href='ocorrencias.html'">
           <div class="card-icon">⚠️</div>
           <div class="card-label">Ação</div>
           <div style="font-size:16px;font-weight:600;margin-top:4px;">Registrar Ocorrência</div>

@@ -62,5 +62,16 @@ const Api = {
   getManutencoes: () => apiFetch('manutencoes.php'), // Histórico de consertos e revisões
   createManutencao: (data) => apiFetch('manutencoes.php', 'POST', data), // Nova manutenção
   deleteManutencao: (id) => apiFetch('manutencoes.php', 'DELETE', { id }), // Remove registro de manutenção
+
+  // Seção de Registros Diários (Diário de Bordo)
+  getRegistrosDiarios: () => apiFetch('registros_diarios.php'),
+  createRegistroDiario: (data) => apiFetch('registros_diarios.php', 'POST', data),
+  deleteRegistroDiario: (id) => apiFetch('registros_diarios.php', 'DELETE', { id }),
+
+  // Seção de Ocorrências
+  getOcorrencias: () => apiFetch('ocorrencias.php'),
+  createOcorrencia: (data) => apiFetch('ocorrencias.php', 'POST', data),
+  updateOcorrenciaStatus: (id, status) => apiFetch('ocorrencias.php', 'PUT', { id, status }),
+  deleteOcorrencia: (id) => apiFetch('ocorrencias.php', 'DELETE', { id }),
 };
 

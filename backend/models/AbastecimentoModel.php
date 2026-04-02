@@ -40,46 +40,53 @@ class AbastecimentoModel
     }
 
     // Método para inserir um novo registro de abastecimento no banco de dados
-    public function create($veiculo_id, $data_abastecimento, $km_atual, $litros, $valor_total, $posto = null)
+    public function create($veiculo_id, $motorista_id, $data_abastecimento, $km_atual, $litros, $valor_total, $posto = null)
     {
-        // SQL preparado com placeholders para inserção segura
-        $sql = "INSERT INTO abastecimentos (veiculo_id, motorista_id, data_abastecimento, km_atual, litros, valor_total, posto) VALUES (?, 1, ?, ?, ?, ?, ?)";
-        // Prepara a query no servidor MySQL
-        $stmt = $this->conn->prepare($sql);
-        // Se a preparação falhar, retorna falso
-        if (!$stmt) return false;
+        try {
+            // SQL preparado com placeholders para inserção segura
+            $sql = "INSERT INTO abastecimentos (veiculo_id, motorista_id, data_abastecimento, km_atual, litros, valor_total, posto) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            // Prepara a query no servidor MySQL
+            $stmt = $this->conn->prepare($sql);
+            // Se a preparação falhar, retorna falso
+            if (!$stmt) return false;
 
-        // Vincula os parâmetros à query (i=inteiro, s=string, d=double/decimal)
-        // Nota: fixamos motorista_id como 1 temporariamente para evitar erros de FK
-        $stmt->bind_param("isidds", $veiculo_id, $data_abastecimento, $km_atual, $litros, $valor_total, $posto);
-        // Executa a instrução e guarda o sucesso
-        $success = $stmt->execute();
-        // Fecha o statement para liberar recursos
-        $stmt->close();
+            // Vincula os parâmetros à query (i=inteiro, s=string, d=double/decimal)
+            $stmt->bind_param("iisidds", $veiculo_id, $motorista_id, $data_abastecimento, $km_atual, $litros, $valor_total, $posto);
+            // Executa a instrução e guarda o sucesso
+            $success = $stmt->execute();
+            // Fecha o statement para liberar recursos
+            $stmt->close();
 
-        // Retorna se a operação foi bem-sucedida
-        return $success;
+            // Retorna se a operação foi bem-sucedida
+            return $success;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     // Método para remover um registro de abastecimento pelo ID
     public function remove($id)
     {
-        // SQL para deletar o registro específico
-        $sql = "DELETE FROM abastecimentos WHERE id = ?";
-        // Prepara a query
-        $stmt = $this->conn->prepare($sql);
-        // Retorna falso se falhar a preparação
-        if (!$stmt) return false;
+        try {
+            // SQL para deletar o registro específico
+            $sql = "DELETE FROM abastecimentos WHERE id = ?";
+            // Prepara a query
+            $stmt = $this->conn->prepare($sql);
+            // Retorna falso se falhar a preparação
+            if (!$stmt) return false;
 
-        // Vincula o ID como inteiro
-        $stmt->bind_param("i", $id);
-        // Executa a deleção
-        $success = $stmt->execute();
-        // Fecha o statement
-        $stmt->close();
+            // Vincula o ID como inteiro
+            $stmt->bind_param("i", $id);
+            // Executa a deleção
+            $success = $stmt->execute();
+            // Fecha o statement
+            $stmt->close();
 
-        // Retorna o resultado da deleção
-        return $success;
+            // Retorna o resultado da deleção
+            return $success;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 }
 ?>

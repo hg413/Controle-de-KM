@@ -40,44 +40,52 @@ class ManutencaoModel
     // Método para cadastrar uma nova manutenção no sistema
     public function create($veiculo_id, $data_manutencao, $descricao, $valor_total, $km_veiculo = null, $tipo = 'preventiva', $realizada_por = null)
     {
-        // SQL preparado para inserção, garantindo segurança contra SQL Injection
-        $sql = "INSERT INTO manutencoes (veiculo_id, data_manutencao, km_veiculo, descricao, valor_total, tipo, realizada_por) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        // Prepara a instrução no servidor de banco de dados
-        $stmt = $this->conn->prepare($sql);
-        // Se houver erro na preparação, retorna falso
-        if (!$stmt) return false;
+        try {
+            // SQL preparado para inserção, garantindo segurança contra SQL Injection
+            $sql = "INSERT INTO manutencoes (veiculo_id, data_manutencao, km_veiculo, descricao, valor_total, tipo, realizada_por) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            // Prepara a instrução no servidor de banco de dados
+            $stmt = $this->conn->prepare($sql);
+            // Se houver erro na preparação, retorna falso
+            if (!$stmt) return false;
 
-        // Vincula os parâmetros aos placeholders '?' da query
-        // Tipos: i=int, s=string, d=double/decimal
-        $stmt->bind_param("isiddss", $veiculo_id, $data_manutencao, $km_veiculo, $descricao, $valor_total, $tipo, $realizada_por);
-        // Executa a operação de inserção
-        $success = $stmt->execute();
-        // Fecha o statement para liberar recursos
-        $stmt->close();
+            // Vincula os parâmetros aos placeholders '?' da query
+            // Tipos: i=int, s=string, d=double/decimal
+            $stmt->bind_param("isiddss", $veiculo_id, $data_manutencao, $km_veiculo, $descricao, $valor_total, $tipo, $realizada_por);
+            // Executa a operação de inserção
+            $success = $stmt->execute();
+            // Fecha o statement para liberar recursos
+            $stmt->close();
 
-        // Retorna verdadeiro se inseriu com sucesso
-        return $success;
+            // Retorna verdadeiro se inseriu com sucesso
+            return $success;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     // Método para remover um registro de manutenção pelo ID único
     public function remove($id)
     {
-        // SQL para deleção física do registro
-        $sql = "DELETE FROM manutencoes WHERE id = ?";
-        // Prepara a consulta
-        $stmt = $this->conn->prepare($sql);
-        // Retorna falso se falhar a preparação
-        if (!$stmt) return false;
+        try {
+            // SQL para deleção física do registro
+            $sql = "DELETE FROM manutencoes WHERE id = ?";
+            // Prepara a consulta
+            $stmt = $this->conn->prepare($sql);
+            // Retorna falso se falhar a preparação
+            if (!$stmt) return false;
 
-        // Vincula o ID como um número inteiro
-        $stmt->bind_param("i", $id);
-        // Executa a remoção e armazena o resultado de sucesso
-        $success = $stmt->execute();
-        // Fecha o statement
-        $stmt->close();
+            // Vincula o ID como um número inteiro
+            $stmt->bind_param("i", $id);
+            // Executa a remoção e armazena o resultado de sucesso
+            $success = $stmt->execute();
+            // Fecha o statement
+            $stmt->close();
 
-        // Retorna se a deleção foi concluída
-        return $success;
+            // Retorna se a deleção foi concluída
+            return $success;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 }
 ?>

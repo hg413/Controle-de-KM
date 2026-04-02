@@ -27,9 +27,11 @@
       <nav class="sidebar-nav">
         <div class="sidebar-section-label">Principal</div>
         <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span> Início</a>
+        <a href="registro_diario.html" class="nav-item"><span class="nav-icon">📋</span> Registro Diário</a>
         <div class="sidebar-section-label">Frota</div>
         <a href="abastecimentos.html" class="nav-item active"><span class="nav-icon">⛽</span> Abastecimentos</a>
         <a href="manutencoes.html" class="nav-item"><span class="nav-icon">🔧</span> Manutenções</a>
+        <a href="ocorrencias.html" class="nav-item"><span class="nav-icon">⚠️</span> Ocorrências</a>
       </nav>
       <!-- Rodapé da sidebar com informações do motorista logado -->
       <div class="sidebar-footer">
@@ -55,6 +57,25 @@
         </div>
         <!-- Botão que dispara a abertura da modal de registro -->
         <button class="btn btn-primary" id="btn-novo-abastecimento">+ Registrar Abastecimento</button>
+      </div>
+
+      <!-- Cards de Resumo Mensal -->
+      <div class="cards-grid" id="relatorio-cards" style="margin-bottom:16px;">
+        <div class="card">
+          <div class="card-icon">⛽</div>
+          <div class="card-label">Consumo Médio</div>
+          <div class="card-value" id="consumo-medio">-- km/L</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">💰</div>
+          <div class="card-label">Gasto Total (Mês)</div>
+          <div class="card-value" id="gasto-total">R$ --</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <div class="card-label">Custo por KM</div>
+          <div class="card-value" id="custo-km">R$ --</div>
+        </div>
       </div>
 
       <!-- Container para a tabela de listagem de abastecimentos do motorista -->

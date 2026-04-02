@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     senha VARCHAR(255) NOT NULL, -- Senha armazenada (texto simples no momento)
     tipo ENUM('admin', 'motorista') DEFAULT 'motorista', -- Define o nível de acesso (padrão motorista)
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Data e hora de criação automática
-);";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
 // Executa a criação da tabela de usuários e informa o resultado
 if ($conn->query($sql_usuarios) === TRUE) {
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS veiculos (
     motorista_responsavel_id INT, -- Referência ao ID do motorista associado
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Data de cadastro
     FOREIGN KEY (motorista_responsavel_id) REFERENCES usuarios(id) ON DELETE SET NULL -- Chave estrangeira ligando ao usuario
-);";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
 // Executa a criação da tabela de veículos
 if ($conn->query($sql_veiculos) === TRUE) {
@@ -110,13 +110,63 @@ CREATE TABLE IF NOT EXISTS manutencoes (
     realizada_por VARCHAR(100), -- Nome da oficina ou mecânico
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Registro automático da data
     FOREIGN KEY (veiculo_id) REFERENCES veiculos(id) ON DELETE CASCADE -- Link com veículo
-);";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
 // Executa a criação da tabela de manutenções
 if ($conn->query($sql_manutencoes) === TRUE) {
     echo "✅ Tabela `manutencoes` verificada/criada com sucesso.<br>";
 } else {
     echo "❌ Erro ao criar tabela `manutencoes`: " . $conn->error . "<br>";
+}
+
+// 8. Script SQL para criar a tabela de 'registros_diarios' que consolida o diário de bordo e assinatura gasta
+$sql_registros = "
+CREATE TABLE IF NOT EXISTS registros_diarios (
+    id INT AUTO_INCREMENT PRIMARY KEY, -- ID único do registro
+    veiculo_id INT NOT NULL, -- FK Veículo
+    motorista_id INT NOT NULL, -- FK Motorista
+    data_registro DATE NOT NULL, -- Data informada
+    hora_inicio TIME NOT NULL, -- Hora que a corrida começou
+    hora_final TIME NOT NULL, -- Hora de finalização
+    km_inicial INT NOT NULL, -- KM gravado no odômetro
+    km_final INT NOT NULL, -- KM descarregado na base
+    km_rodado INT NOT NULL, -- Saldo km rodado
+    destino_motivo TEXT NOT NULL, -- O que foi efetuado 
+    assinatura_digital LONGTEXT NOT NULL, -- Assinatura string codificada em base64
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Time estampa
+    FOREIGN KEY (veiculo_id) REFERENCES veiculos(id) ON DELETE CASCADE,
+    FOREIGN KEY (motorista_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+
+// Executa a criação da tabela de registro diário
+if ($conn->query($sql_registros) === TRUE) {
+    echo "✅ Tabela `registros_diarios` verificada/criada com sucesso.<br>";
+} else {
+    echo "❌ Erro ao criar tabela `registros_diarios`: " . $conn->error . "<br>";
+}
+
+// 9. Tabela de ocorrências (incidentes, avarias, multimidia)
+$sql_ocorrencias = "
+CREATE TABLE IF NOT EXISTS ocorrencias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    veiculo_id INT NOT NULL,
+    motorista_id INT NOT NULL,
+    data_ocorrencia DATE NOT NULL,
+    hora_ocorrencia TIME NOT NULL,
+    km_atual INT,
+    local_ocorrencia VARCHAR(255),
+    descricao TEXT NOT NULL,
+    foto LONGTEXT,
+    status ENUM('aberta','em_analise','resolvida') DEFAULT 'aberta',
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (veiculo_id) REFERENCES veiculos(id) ON DELETE CASCADE,
+    FOREIGN KEY (motorista_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+
+if ($conn->query($sql_ocorrencias) === TRUE) {
+    echo "✅ Tabela `ocorrencias` verificada/criada com sucesso.<br>";
+} else {
+    echo "❌ Erro ao criar tabela `ocorrencias`: " . $conn->error . "<br>";
 }
 
 // 5. Verifica se o usuário Administrador padrão já existe no banco

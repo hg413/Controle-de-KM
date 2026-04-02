@@ -135,6 +135,45 @@ async function carregarTabela() {
       <tbody>${rows}</tbody>
     </table>
   `;
+
+  // ── CÁLCULO DAS MÉTRICAS ──
+  const agora = new Date();
+  const mesAtual = agora.getMonth();
+  const anoAtual = agora.getFullYear();
+
+  // Filtra apenas os registros do mês atual
+  const doMes = data.filter(a => {
+    const d = new Date(a.data_abastecimento);
+    return d.getMonth() === mesAtual && d.getFullYear() === anoAtual;
+  });
+
+  // Totais acumulados
+  const totalLitros = data.reduce((s, a) => s + parseFloat(a.litros || 0), 0);
+  const totalKM     = data.reduce((s, a) => s + parseFloat(a.km_atual || 0), 0);
+  const gastoMes    = doMes.reduce((s, a) => s + parseFloat(a.valor_total || 0), 0);
+  const gastoTotal  = data.reduce((s, a) => s + parseFloat(a.valor_total || 0), 0);
+
+  // Consumo médio: km_máx - km_mín / total litros
+  const kms = data.map(a => parseFloat(a.km_atual)).filter(k => k > 0).sort((a,b) => a-b);
+  let consumoMedio = '--';
+  if (kms.length >= 2 && totalLitros > 0) {
+    const kmPercorrido = kms[kms.length - 1] - kms[0];
+    consumoMedio = (kmPercorrido / totalLitros).toFixed(1);
+  }
+
+  // Custo por km
+  let custoPorKm = '--';
+  const kmPercTotal = kms.length >= 2 ? kms[kms.length-1] - kms[0] : 0;
+  if (kmPercTotal > 0 && gastoTotal > 0) {
+    custoPorKm = (gastoTotal / kmPercTotal).toFixed(2);
+  }
+
+  // Preenche os cards
+  if (document.getElementById('consumo-medio')) {
+    document.getElementById('consumo-medio').textContent = consumoMedio !== '--' ? `${consumoMedio} km/L` : '-- km/L';
+    document.getElementById('gasto-total').textContent   = `R$ ${gastoMes.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+    document.getElementById('custo-km').textContent      = custoPorKm !== '--' ? `R$ ${custoPorKm}` : 'R$ --';
+  }
 }
 
 // Torna visível a janela modal de cadastro, setando a data atual como padrão

@@ -2,6 +2,7 @@
 <!-- Especifica a linguagem da página como português brasileiro -->
 <html lang="pt-BR">
 <!-- Cabeçalho com metadados e links de estilo -->
+
 <head>
   <meta charset="UTF-8" />
   <!-- Garante que o layout se ajuste a janelas de diferentes tamanhos -->
@@ -24,18 +25,24 @@
         <div class="logo-text">Controle KM<span>Painel Admin</span></div>
       </div>
       <nav class="sidebar-nav">
+
         <!-- Rótulo e link para a seção Dashboard -->
         <div class="sidebar-section-label">Principal</div>
         <a href="index.html" class="nav-item"><span class="nav-icon">📊</span> Dashboard</a>
+        <a href="registro_diario.html" class="nav-item"><span class="nav-icon">📋</span> Registro Diário</a>
+
         <!-- Seção de cadastros com o link de usuários ativo -->
         <div class="sidebar-section-label">Cadastros</div>
         <a href="usuarios.html" class="nav-item active"><span class="nav-icon">👥</span> Usuários</a>
         <a href="veiculos.html" class="nav-item"><span class="nav-icon">🚙</span> Veículos</a>
+
         <!-- Rótulo e links para a seção Frota -->
         <div class="sidebar-section-label">Frota</div>
         <a href="abastecimentos.html" class="nav-item"><span class="nav-icon">⛽</span> Abastecimentos</a>
         <a href="manutencoes.html" class="nav-item"><span class="nav-icon">🔧</span> Manutenções</a>
+        <a href="ocorrencias.html" class="nav-item"><span class="nav-icon">⚠️</span> Ocorrências</a>
       </nav>
+
       <!-- Rodapé da sidebar com dados do usuário logado -->
       <div class="sidebar-footer">
         <div class="user-info">
@@ -44,6 +51,7 @@
             <div class="user-name" id="sidebar-nome">Carregando...</div>
             <div class="user-role" id="sidebar-role">Administrador</div>
           </div>
+
           <!-- Botão para deslogar do sistema -->
           <button class="btn-logout" id="btn-logout" title="Sair">⏻</button>
         </div>
@@ -58,6 +66,7 @@
           <h1 class="page-title">Usuários</h1>
           <p class="page-subtitle">Gerencie os usuários do sistema</p>
         </div>
+
         <!-- Botão para abrir o modal de criação de novo usuário -->
         <button class="btn btn-primary" id="btn-novo-usuario">+ Novo Usuário</button>
       </div>
@@ -67,8 +76,10 @@
         <div class="table-header">
           <span class="table-title">Lista de Usuários</span>
         </div>
+
         <!-- Div reservada para que o JavaScript injete a tabela dinamicamente -->
         <div id="tabela-wrapper">
+
           <!-- Estado inicial de carregamento -->
           <div class="empty-state">
             <div class="empty-icon">⏳</div>
@@ -84,11 +95,14 @@
     <div class="modal">
       <div class="modal-header">
         <h2 class="modal-title" id="modal-titulo">Novo Usuário</h2>
+
         <!-- Botão 'X' para fechar a modal -->
         <button class="modal-close" id="modal-fechar">✕</button>
       </div>
+
       <!-- Formulário de cadastro de usuário -->
       <form id="form-usuario">
+
         <!-- Campo oculto para armazenar o ID em caso de edição -->
         <input type="hidden" id="usuario-id" />
         <div class="form-group">
@@ -111,6 +125,7 @@
             <option value="motorista">Motorista</option>
           </select>
         </div>
+
         <!-- Botões de ação do final do modal -->
         <div class="modal-footer">
           <button type="button" class="btn btn-ghost" id="btn-cancelar">Cancelar</button>
@@ -123,18 +138,22 @@
   <!-- Inclusão dos scripts fundamentais (API e Autenticação) -->
   <script src="../js/api.js?v=2"></script>
   <script src="../js/auth.js?v=2"></script>
+
   <!-- Inclusão da lógica de CRUD de usuários -->
   <script src="../js/usuarios.js?v=2"></script>
   <!-- Script de inicialização da página -->
   <script>
+
     // Garante que apenas administradores acessem esta página
     const usuario = Auth.require('admin');
-    if (usuario) { 
+    if (usuario) {
+
       // Executa as rotinas de preenchimento de sidebar e inicialização do menu mobile e do CRUD
-      preencherSidebar(usuario); 
-      initMobileMenu(); 
-      initUsuarios(); 
+      preencherSidebar(usuario);
+      initMobileMenu();
+      initUsuarios();
     }
   </script>
 </body>
+
 </html>
