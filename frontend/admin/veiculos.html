@@ -8,7 +8,7 @@
   <!-- Garante que a página seja responsiva em dispositivos móveis -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- Título da página exibido na aba do navegador -->
-  <title>Veículos — Admin | Controle KM</title>
+  <title>Veículos — Admin | SGF</title>
   <!-- Link para o arquivo CSS central do projeto -->
   <link rel="stylesheet" href="../css/style.css" />
 </head>
@@ -22,8 +22,8 @@
     <aside class="sidebar">
       <!-- Topo da sidebar com logo e identificação do painel admin -->
       <div class="sidebar-logo">
-        <div class="logo-icon">🚗</div>
-        <div class="logo-text">Controle KM<span>Painel Admin</span></div>
+        <img src="/controle-km/frontend/assets/img/logo.png" alt="SGF Logo" class="sidebar-logo-img">
+        <div class="logo-text">SGF<span>Gerenciamento de Frota</span></div>
       </div>
       <!-- Itens de navegação da barra lateral -->
       <nav class="sidebar-nav">
@@ -33,6 +33,7 @@
         <div class="sidebar-section-label">Cadastros</div>
         <a href="usuarios.html" class="nav-item"><span class="nav-icon">👥</span> Usuários</a>
         <a href="veiculos.html" class="nav-item active"><span class="nav-icon">🚙</span> Veículos</a>
+        <a href="contratos.html" class="nav-item"><span class="nav-icon">📄</span> Contratos</a>
         <div class="sidebar-section-label">Frota</div>
         <a href="abastecimentos.html" class="nav-item"><span class="nav-icon">⛽</span> Abastecimentos</a>
         <a href="manutencoes.html" class="nav-item"><span class="nav-icon">🔧</span> Manutenções</a>
@@ -98,6 +99,17 @@
 
           <!-- Campo obrigatório para a placa do carro -->
           <input class="form-control" type="text" id="veiculo-placa" placeholder="Ex: ABC-1234" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Modelo</label>
+          <select class="form-control" id="veiculo-modelo" required>
+            <option value="">Selecione o modelo...</option>
+            <option value="Carro de passeio">Carro de passeio</option>
+            <option value="Van">Van</option>
+            <option value="Micro-ônibus">Micro-ônibus</option>
+            <option value="Ônibus">Ônibus</option>
+            <option value="Outro">Outro</option>
+          </select>
         </div>
         <div class="form-group">
           <label class="form-label">Motorista Responsável (opcional)</label>

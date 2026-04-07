@@ -70,11 +70,12 @@ function handlePost(VeiculoModel $model): void
         return;
     }
 
-    // Obtém o ID do motorista responsável, se houver
+    // Obtém o nome do modelo, se houver
+    $modelo = $data->modelo ?? null;
     $motorista_id = $data->motorista_responsavel_id ?? null;
     
     // Tenta realizar o cadastro do veículo através do model
-    if ($model->create($placa, $motorista_id)) {
+    if ($model->create($placa, $motorista_id, $modelo)) {
         // Sucesso: retorna status 201 (Created)
         respond(201, "Veículo cadastrado com sucesso.");
     } else {

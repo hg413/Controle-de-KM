@@ -1,43 +1,74 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registro Diário | Controle KM</title>
+  <title>Registro Diário | SGF</title>
   <link rel="stylesheet" href="../css/style.css" />
   <style>
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .form-group.full { grid-column: span 2; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group.full {
+      grid-column: span 2;
+    }
+
     .signature-container {
       border: 1px solid var(--border);
       border-radius: var(--radius);
       background: var(--bg-input);
       margin-top: 8px;
     }
+
     canvas#assinatura {
-      width: 100%; height: 160px;
-      cursor: crosshair; border-radius: var(--radius); display: block;
+      width: 100%;
+      height: 160px;
+      cursor: crosshair;
+      border-radius: var(--radius);
+      display: block;
     }
-    .signature-actions { margin-top: 8px; }
+
+    .signature-actions {
+      margin-top: 8px;
+    }
+
     .btn-clear {
-      background: none; border: none; color: var(--accent);
-      cursor: pointer; font-size: 13px; padding: 4px 8px;
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 13px;
+      padding: 4px 8px;
     }
-    .btn-clear:hover { text-decoration: underline; }
+
+    .btn-clear:hover {
+      text-decoration: underline;
+    }
+
     @media (max-width: 600px) {
-      .grid-2 { grid-template-columns: 1fr; }
-      .form-group.full { grid-column: span 1; }
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: span 1;
+      }
     }
   </style>
 </head>
+
 <body>
   <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
 
   <div class="app-layout">
     <aside class="sidebar">
       <div class="sidebar-logo">
-        <div class="logo-icon">🚗</div>
-        <div class="logo-text">Controle KM<span>Painel Motorista</span></div>
+        <img src="/controle-km/frontend/assets/img/logo.png" alt="SGF Logo" class="sidebar-logo-img">
+        <div class="logo-text">SGF<span>Painel Motorista</span></div>
       </div>
       <nav class="sidebar-nav">
         <div class="sidebar-section-label">Principal</div>
@@ -77,6 +108,19 @@
             <div class="form-group">
               <label class="form-label">Motorista</label>
               <select class="form-control" id="rd-motorista" required></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tipo de Viagem</label>
+              <select class="form-control" id="rd-tipo-viagem" required>
+                <option value="avulso" selected>Avulso</option>
+                <option value="contrato">Por Contrato</option>
+              </select>
+            </div>
+            <div class="form-group" id="container-contrato" style="display: none;">
+              <label class="form-label">Contrato</label>
+              <select class="form-control" id="rd-contrato">
+                <option value="">Selecione um contrato</option>
+              </select>
             </div>
             <div class="form-group">
               <label class="form-label">Data</label>
@@ -145,4 +189,5 @@
     if (u) { preencherSidebar(u); initMobileMenu(); initRegistroDiario(); }
   </script>
 </body>
+
 </html>

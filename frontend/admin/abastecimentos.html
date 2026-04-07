@@ -7,7 +7,7 @@
   <!-- Garante que o layout se ajuste corretamente a dispositivos móveis -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- Título da página exibido na aba do navegador -->
-  <title>Abastecimentos — Admin | Controle KM</title>
+  <title>Abastecimentos — Admin | SGF</title>
   <!-- Link para o arquivo CSS central do projeto -->
   <link rel="stylesheet" href="../css/style.css" />
 </head>
@@ -21,8 +21,8 @@
     <aside class="sidebar">
       <!-- Topo da sidebar com logo e identificação do sistema -->
       <div class="sidebar-logo">
-        <div class="logo-icon">🚗</div>
-        <div class="logo-text">Controle KM<span>Painel Admin</span></div>
+        <img src="/controle-km/frontend/assets/img/logo.png" alt="SGF Logo" class="sidebar-logo-img">
+        <div class="logo-text">SGF<span>Gerenciamento de Frota</span></div>
       </div>
       <!-- Links de navegação interna da barra lateral -->
       <nav class="sidebar-nav">
@@ -32,6 +32,7 @@
         <div class="sidebar-section-label">Cadastros</div>
         <a href="usuarios.html" class="nav-item"><span class="nav-icon">👥</span> Usuários</a>
         <a href="veiculos.html" class="nav-item"><span class="nav-icon">🚙</span> Veículos</a>
+        <a href="contratos.html" class="nav-item"><span class="nav-icon">📄</span> Contratos</a>
         <div class="sidebar-section-label">Frota</div>
         <a href="abastecimentos.html" class="nav-item active"><span class="nav-icon">⛽</span> Abastecimentos</a>
         <a href="manutencoes.html" class="nav-item"><span class="nav-icon">🔧</span> Manutenções</a>
@@ -82,6 +83,11 @@
           <div class="card-label">Custo por KM</div>
           <div class="card-value" id="custo-km">R$ --</div>
         </div>
+      </div>
+
+      <!-- Barra de busca para filtrar a tabela -->
+      <div style="margin-bottom: 16px;">
+        <input type="text" id="busca-abastecimento" class="form-control" placeholder="🔍 Buscar por veículo ou placa..." style="max-width: 400px; background-color: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color);" />
       </div>
 
       <div class="table-card">

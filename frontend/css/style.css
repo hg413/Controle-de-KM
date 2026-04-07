@@ -1,5 +1,5 @@
 /* =========================================================
-   SISTEMA CONTROLE-KM — ESTILOS GLOBAIS E COMPONENTES
+   SISTEMA SGF — ESTILOS GLOBAIS E COMPONENTES
    Responsável pela identidade visual, layout e responsividade.
    ========================================================= */
 
@@ -101,6 +101,14 @@ a:hover { text-decoration: underline; }
   display: flex; align-items: center; justify-content: center;
   font-size: 18px;
   box-shadow: 0 2px 12px rgba(79,142,247,0.4);
+}
+
+.sidebar-logo .sidebar-logo-img {
+  width: 44px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: contain;
+  transition: var(--transition);
 }
 
 .sidebar-logo .logo-text {
@@ -498,15 +506,22 @@ textarea.form-control { resize: vertical; min-height: 70px; }
     radial-gradient(ellipse at 20% 50%, rgba(79,142,247,0.10) 0%, transparent 60%),
     radial-gradient(ellipse at 80% 20%, rgba(124,95,247,0.08) 0%, transparent 50%);
 }
-
 .login-card {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 40px;
   width: 100%;
-  max-width: 400px;
+  max-width: 440px;
   box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.client-logo {
+  max-width: 260px;
+  height: auto;
+  margin-bottom: 24px;
+  transition: var(--transition);
 }
 
 /* ── DISPLAY KM RODADO ── */

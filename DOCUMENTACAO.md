@@ -1,6 +1,6 @@
-# Documentação do Sistema - Controle de KM 
+# Documentação do Sistema - SGF (Sistema de Gerenciamento de Frota)
 
-Este documento fornece uma visão detalhada do sistema de gerenciamento de frota "Controle KM".
+Este documento fornece uma visão detalhada do sistema de gerenciamento de frota "SGF".
 
 ## 1. Visão Geral
 O sistema permite o controle de uma frota de veículos, registrando abastecimentos, manutenções e vinculando motoristas aos veículos. Possui dois níveis de acesso: **Administrador** e **Motorista**.

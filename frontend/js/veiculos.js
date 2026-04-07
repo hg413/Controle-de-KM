@@ -26,6 +26,7 @@ function initVeiculos() {
     e.preventDefault();
     // Coleta a placa e o ID do motorista, limpando espaços e padronizando para maiúsculas
     const placa      = document.getElementById('veiculo-placa').value.trim().toUpperCase();
+    const modelo     = document.getElementById('veiculo-modelo').value;
     const motoristaId = document.getElementById('veiculo-motorista').value || null;
 
     // Sinaliza visualmente que o cadastro está processando
@@ -34,7 +35,7 @@ function initVeiculos() {
     btn.disabled = true;
 
     // Realiza a chamada POST para criar o veículo via API
-    const { ok, data } = await Api.createVeiculo(placa, motoristaId);
+    const { ok, data } = await Api.createVeiculo(placa, motoristaId, modelo);
 
     // Se a criação foi bem-sucedida
     if (ok) {
@@ -89,6 +90,7 @@ async function carregarVeiculos() {
   const rows = data.map(v => `
     <tr>
       <td><strong>${v.placa}</strong></td> <!-- Exibe a placa em negrito -->
+      <td>${v.modelo || '<span style="color:var(--text-secondary)">—</span>'}</td> <!-- Exibe o modelo -->
       <td>${v.motorista_responsavel || '<span style="color:var(--text-secondary)">—</span>'}</td> <!-- Nome do motorista ou traço -->
       <td>
         <!-- Botão para remover o veículo do sistema -->
@@ -103,6 +105,7 @@ async function carregarVeiculos() {
       <thead>
         <tr>
           <th>Placa</th>
+          <th>Modelo</th>
           <th>Motorista Responsável</th>
           <th>Ações</th>
         </tr>

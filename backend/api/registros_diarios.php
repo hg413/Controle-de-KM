@@ -40,6 +40,8 @@ function handlePost(RegistroDiarioModel $model): void
     // Extrai propriedades
     $v_id = $data->veiculo_id ?? null;
     $m_id = $data->motorista_id ?? null;
+    $tipo = $data->tipo_viagem ?? 'avulso'; // Default para avulso se não enviado
+    $c_id = $data->contrato_id ?? null; // ID do contrato, pode ser nulo
     $dt_reg = $data->data_registro ?? null;
     $h_ini = $data->hora_inicio ?? null;
     $h_fim = $data->hora_final ?? null;
@@ -54,7 +56,7 @@ function handlePost(RegistroDiarioModel $model): void
         return;
     }
 
-    if ($model->create($v_id, $m_id, $dt_reg, $h_ini, $h_fim, $km_ini, $km_fim, $km_rodado, $motivo, $assinatura)) {
+    if ($model->create($v_id, $m_id, $tipo, $c_id, $dt_reg, $h_ini, $h_fim, $km_ini, $km_fim, $km_rodado, $motivo, $assinatura)) {
         respond(201, "Registro Diário salvo com sucesso.");
     } else {
         respond(503, "Erro ao salvar o registro no banco: " . $conn->error);

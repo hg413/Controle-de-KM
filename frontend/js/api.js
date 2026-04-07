@@ -50,7 +50,7 @@ const Api = {
 
   // Seção de Gerenciamento de Veículos
   getVeiculos: ()                          => apiFetch('veiculos.php'), // Busca frota cadastrada
-  createVeiculo: (placa, motorista_id)     => apiFetch('veiculos.php', 'POST', { placa, motorista_responsavel_id: motorista_id || null }), // Cadastra carro
+  createVeiculo: (placa, motorista_id, modelo)     => apiFetch('veiculos.php', 'POST', { placa, motorista_responsavel_id: motorista_id || null, modelo }), // Cadastra carro
   deleteVeiculo: (id)                      => apiFetch('veiculos.php', 'DELETE', { id }), // Apaga registro de veículo
 
   // Seção de Registros de Abastecimentos
@@ -67,6 +67,11 @@ const Api = {
   getRegistrosDiarios: () => apiFetch('registros_diarios.php'),
   createRegistroDiario: (data) => apiFetch('registros_diarios.php', 'POST', data),
   deleteRegistroDiario: (id) => apiFetch('registros_diarios.php', 'DELETE', { id }),
+
+  // Seção de Contratos
+  getContratos: () => apiFetch('contratos.php'),
+  createContrato: (nome, cliente, descricao) => apiFetch('contratos.php', 'POST', { nome, cliente, descricao }),
+  deleteContrato: (id) => apiFetch('contratos.php', 'DELETE', { id }),
 
   // Seção de Ocorrências
   getOcorrencias: () => apiFetch('ocorrencias.php'),

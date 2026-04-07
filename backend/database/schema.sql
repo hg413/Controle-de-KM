@@ -23,22 +23,34 @@ CREATE TABLE IF NOT EXISTS `veiculos` (
   FOREIGN KEY (`motorista_responsavel_id`) REFERENCES `usuarios`(`id`) ON DELETE SET NULL
 );
 
--- Estrutura da tabela `registro_diario`
-CREATE TABLE IF NOT EXISTS `registro_diario` (
+-- Estrutura da tabela `contratos`
+CREATE TABLE IF NOT EXISTS `contratos` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `nome` VARCHAR(255) NOT NULL,
+  `cliente` VARCHAR(255) DEFAULT NULL,
+  `descricao` TEXT DEFAULT NULL,
+  `criado_em` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Estrutura da tabela `registros_diarios`
+CREATE TABLE IF NOT EXISTS `registros_diarios` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `veiculo_id` INT NOT NULL,
   `motorista_id` INT NOT NULL,
+  `tipo_viagem` ENUM('avulso', 'contrato') NOT NULL DEFAULT 'avulso',
+  `contrato_id` INT DEFAULT NULL,
   `data_registro` DATE NOT NULL,
   `hora_inicio` TIME NOT NULL,
   `hora_final` TIME DEFAULT NULL,
   `km_inicial` INT NOT NULL,
   `km_final` INT DEFAULT NULL,
   `km_rodado` INT GENERATED ALWAYS AS (km_final - km_inicial) STORED,
-  `roteiro` TEXT NOT NULL,
-  `assinatura_motorista` TEXT DEFAULT NULL,
+  `destino_motivo` TEXT NOT NULL,
+  `assinatura_digital` LONGTEXT NOT NULL,
   `criado_em` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (`veiculo_id`) REFERENCES `veiculos`(`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`motorista_id`) REFERENCES `usuarios`(`id`) ON DELETE CASCADE
+  FOREIGN KEY (`motorista_id`) REFERENCES `usuarios`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`contrato_id`) REFERENCES `contratos`(`id`) ON DELETE SET NULL
 );
 
 -- Estrutura da tabela `abastecimentos`

@@ -9,8 +9,14 @@ function initAbastecimentos() {
   // Busca veículos e motoristas para preencher as listas de seleção (selects) do formulário
   preencherSelects();
 
-  // Configura o evento de clique para abrir o modal de novo abastecimento
+  // Configura o evento para abrir o modal
   document.getElementById('btn-novo-abastecimento').addEventListener('click', () => abrirModal());
+  
+  // Configura o evento de busca em tempo real
+  const inputBusca = document.getElementById('busca-abastecimento');
+  if (inputBusca) {
+    inputBusca.addEventListener('input', () => carregarTabela());
+  }
   // Configura os eventos para fechar o modal ao clicar no 'X' ou no botão Cancelar
   document.getElementById('modal-fechar').addEventListener('click', fecharModal);
   document.getElementById('btn-cancelar').addEventListener('click', fecharModal);
@@ -88,11 +94,25 @@ async function carregarTabela() {
   wrapper.innerHTML = '<div class="empty-state">⏳ Carregando...</div>';
 
   // Faz a chamada à API para obter todos os abastecimentos
-  const { ok, data } = await Api.getAbastecimentos();
+  const { ok, data: allData } = await Api.getAbastecimentos();
 
-  // Caso não existam dados ou a resposta falhe, exibe mensagem de lista vazia
-  if (!ok || !Array.isArray(data) || data.length === 0) {
-    wrapper.innerHTML = '<div class="empty-state">⛽ Nenhum abastecimento registrado.</div>';
+  // Se a busca falhar ou não houver dados
+  if (!ok || !Array.isArray(allData)) {
+    wrapper.innerHTML = '<div class="empty-state">⛽ Erro ao carregar abastecimentos.</div>';
+    return;
+  }
+
+  // Filtragem por busca (se houver termo digitado)
+  const termo = document.getElementById('busca-abastecimento')?.value.toLowerCase().trim() || '';
+  const data = allData.filter(a => {
+    const placa = (a.placa || '').toLowerCase();
+    const motorista = (a.motorista_nome || '').toLowerCase();
+    return placa.includes(termo) || motorista.includes(termo);
+  });
+
+  // Caso não existam dados após o filtro
+  if (data.length === 0) {
+    wrapper.innerHTML = `<div class="empty-state">⛽ ${termo ? 'Nenhum resultado para "' + termo + '"' : 'Nenhum abastecimento registrado.'}</div>`;
     return;
   }
 

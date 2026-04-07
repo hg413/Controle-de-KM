@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Imprime um cabeçalho HTML indicando que o script de configuração começou
-echo "<h1>Setup do Banco de Dados - Controle KM</h1>";
+echo "<h1>Setup do Banco de Dados — Sistema de Gerenciamento de Frota (SGF)</h1>";
 
 // Define o endereço do servidor de banco de dados (normalmente localhost para XAMPP)
 $host = "localhost";
@@ -119,12 +119,30 @@ if ($conn->query($sql_manutencoes) === TRUE) {
     echo "❌ Erro ao criar tabela `manutencoes`: " . $conn->error . "<br>";
 }
 
-// 8. Script SQL para criar a tabela de 'registros_diarios' que consolida o diário de bordo e assinatura gasta
+// 8. Tabela de contratos que serão vinculados aos registros diários
+$sql_contratos = "
+CREATE TABLE IF NOT EXISTS contratos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    cliente VARCHAR(255),
+    descricao TEXT,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+
+if ($conn->query($sql_contratos) === TRUE) {
+    echo "✅ Tabela `contratos` verificada/criada com sucesso.<br>";
+} else {
+    echo "❌ Erro ao criar tabela `contratos`: " . $conn->error . "<br>";
+}
+
+// 9. Script SQL para criar a tabela de 'registros_diarios' que consolida o diário de bordo e assinatura gasta
 $sql_registros = "
 CREATE TABLE IF NOT EXISTS registros_diarios (
     id INT AUTO_INCREMENT PRIMARY KEY, -- ID único do registro
     veiculo_id INT NOT NULL, -- FK Veículo
     motorista_id INT NOT NULL, -- FK Motorista
+    tipo_viagem ENUM('avulso', 'contrato') DEFAULT 'avulso', -- Novo campo: Avulso ou Contrato
+    contrato_id INT DEFAULT NULL, -- FK Contrato opcional
     data_registro DATE NOT NULL, -- Data informada
     hora_inicio TIME NOT NULL, -- Hora que a corrida começou
     hora_final TIME NOT NULL, -- Hora de finalização
@@ -135,7 +153,8 @@ CREATE TABLE IF NOT EXISTS registros_diarios (
     assinatura_digital LONGTEXT NOT NULL, -- Assinatura string codificada em base64
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Time estampa
     FOREIGN KEY (veiculo_id) REFERENCES veiculos(id) ON DELETE CASCADE,
-    FOREIGN KEY (motorista_id) REFERENCES usuarios(id) ON DELETE CASCADE
+    FOREIGN KEY (motorista_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (contrato_id) REFERENCES contratos(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
 // Executa a criação da tabela de registro diário

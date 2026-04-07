@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestão de Contratos | SGF</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <img src="/controle-km/frontend/assets/img/logo.png" alt="SGF Logo" class="sidebar-logo-img">
+        <div class="logo-text">SGF<span>Gerenciamento de Frota</span></div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-label">Principal</div>
+        <a href="index.html" class="nav-item"><span class="nav-icon">📊</span> Dashboard</a>
+        <a href="registro_diario.html" class="nav-item"><span class="nav-icon">📋</span> Registro Diário</a>
+        <div class="sidebar-section-label">Cadastros</div>
+        <a href="usuarios.html" class="nav-item"><span class="nav-icon">👥</span> Usuários</a>
+        <a href="veiculos.html" class="nav-item"><span class="nav-icon">🚙</span> Veículos</a>
+        <a href="contratos.html" class="nav-item active"><span class="nav-icon">📄</span> Contratos</a>
+        <div class="sidebar-section-label">Frota</div>
+        <a href="abastecimentos.html" class="nav-item"><span class="nav-icon">⛽</span> Abastecimentos</a>
+        <a href="manutencoes.html" class="nav-item"><span class="nav-icon">🔧</span> Manutenções</a>
+        <a href="ocorrencias.html" class="nav-item"><span class="nav-icon">⚠️</span> Ocorrências</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="sidebar-avatar">A</div>
+          <div class="user-details">
+            <div class="user-name" id="sidebar-nome">Carregando...</div>
+            <div class="user-role" id="sidebar-role">Administrador</div>
+          </div>
+          <button class="btn-logout" id="btn-logout" title="Sair">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="page-header">
+        <h1 class="page-title">Gestão de Contratos</h1>
+        <p class="page-subtitle">Cadastre e gerencie os contratos de prestação de serviço</p>
+      </div>
+
+      <div class="form-card">
+        <form id="form-contrato">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">Nome do Contrato</label>
+              <input type="text" class="form-control" id="c-nome" placeholder="Ex: Manutenção Mensal" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cliente / Empresa</label>
+              <input type="text" class="form-control" id="c-cliente" placeholder="Ex: Empresa ABC Ltda" required />
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+              <label class="form-label">Descrição (Opcional)</label>
+              <textarea class="form-control" id="c-descricao" rows="2" placeholder="Detalhes do contrato..."></textarea>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:flex-end; margin-top:16px;">
+            <button type="submit" class="btn btn-primary">Cadastrar Contrato</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="table-card" style="margin-top: 24px;">
+        <div class="table-header">
+          <span class="table-title">Contratos Ativos</span>
+        </div>
+        <div id="tabela-wrapper">
+           <div class="empty-state">⏳ Carregando contratos...</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/api.js?v=5"></script>
+  <script src="../js/auth.js?v=5"></script>
+  <script>
+    const u = Auth.require('admin');
+    if (u) { 
+      preencherSidebar(u); 
+      initMobileMenu(); 
+      carregarContratos(); 
+    }
+
+    document.getElementById('form-contrato').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nome = document.getElementById('c-nome').value;
+      const cliente = document.getElementById('c-cliente').value;
+      const desc = document.getElementById('c-descricao').value;
+
+      const res = await Api.createContrato(nome, cliente, desc);
+      if (res.ok) {
+        showToast('Contrato cadastrado!', 'success');
+        document.getElementById('form-contrato').reset();
+        carregarContratos();
+      } else {
+        showToast('Erro ao cadastrar.', 'error');
+      }
+    });
+
+    async function carregarContratos() {
+      const wrapper = document.getElementById('tabela-wrapper');
+      const { ok, data } = await Api.getContratos();
+
+      if (!ok || data.length === 0) {
+        wrapper.innerHTML = '<div class="empty-state"><p>Nenhum contrato cadastrado.</p></div>';
+        return;
+      }
+
+      wrapper.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Contrato</th>
+              <th>Cliente</th>
+              <th>Criado em</th>
+              <th style="width: 80px;">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${data.map(c => `
+              <tr>
+                <td><strong>${c.nome}</strong></td>
+                <td>${c.cliente}</td>
+                <td>${new Date(c.criado_em).toLocaleDateString('pt-BR')}</td>
+                <td>
+                  <button class="btn-icon btn-delete" onclick="deletarContrato(${c.id})">🗑️</button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    async function deletarContrato(id) {
+      if(!confirm('Deseja realmente remover este contrato?')) return;
+      const { ok } = await Api.deleteContrato(id);
+      if (ok) {
+        showToast('Contrato removido.', 'success');
+        carregarContratos();
+      }
+    }
+  </script>
+</body>
+</html>
